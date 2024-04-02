@@ -119,6 +119,19 @@ def print_check_number():
         print("Произошла ошибка:", e)
 
 
+def equality_check():
+    numbers = input('numbers: ').strip().split(" ")
+    print(numbers)
+    if len(numbers) != 2:
+        raise ValueError("Чисел не должно быть больше двух! Введите 2 числа!")
+
+    if numbers[0] == numbers[1]:
+        print("Введенные числа равны!")
+    else:
+        print(sorted(numbers))
+
+
+
 def compare_numbers():
     try:
         num1 = float(input("Введите первое число: "))
@@ -135,7 +148,3 @@ def compare_numbers():
         print("Пожалуйста, введите корректные числа.")
     except Exception as e:
         print("Произошла ошибка:", e)
-
-compare_numbers()
-
-equality_check()
