@@ -131,7 +131,6 @@ def equality_check():
         print(sorted(numbers))
 
 
-
 def compare_numbers():
     try:
         num1 = float(input("Введите первое число: "))
@@ -148,3 +147,73 @@ def compare_numbers():
         print("Пожалуйста, введите корректные числа.")
     except Exception as e:
         print("Произошла ошибка:", e)
+
+
+def fizz_buzz():
+    num = int(input("Введите число от 1 до 100: "))
+
+    try:
+        if num < 1 or num > 100:
+            raise ValueError("Введите число от 1 до 100!")
+
+        if num % 3 == 0 and num % 5 == 0:
+            print("FizzBuzz")
+        elif num % 3 == 0:
+            print("Fizz")
+        elif num % 5 == 0:
+            print("Buzz")
+        else:
+            print(num)
+    except Exception as e:
+        print("Произошла ошибка:", e)
+
+
+def degree():
+    num = int(input("Введите число: "))
+    degree = int(input("Введите степень возведения от 0 до 7: "))
+
+    if degree > 7 or degree < 0:
+        raise ValueError("Введите степень возведения от 0 до 7!")
+    print(num ** degree)
+
+
+def calc_cost_conversation():
+    cost = float(input("Введите стоимость разговора одной минуты: "))
+    from_operator = input("Введите оператор отправителя: ")
+    to_operator = input("Введите оператор получателя: ")
+
+
+def salary_manager(sales):
+    salary = 200
+    percentage_of_sales = 3 if sales < 500 else 5 if sales < 1000 else 8
+    result_salary = salary + sales * percentage_of_sales/100
+    print(f"Зарплата составляет {result_salary} рублей")
+    return result_salary
+
+
+def salary():
+    dict_managers = {}
+    
+    for manager in range(1, 4):
+        manager_sales = int(input(f"Введите сумму продаж менеджера "))
+        name_manager = 'manager_' + str(manager)
+        salary = salary_manager(manager_sales)
+        dict_managers[name_manager] = salary
+
+    for key, value in dict_managers.items():
+        if value == max(dict_managers.values()):
+            print(f"Менеджер с самым высокой зарплатой: {key}")
+            dict_managers[key] = value + 200
+            print(f"Менеджер {key} получает премию за работу 200$")
+
+        print(f"Зарплата менеджера {key} равна {value} рублей")
+    
+    
+
+
+
+        
+
+
+
+salary()
