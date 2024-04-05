@@ -59,4 +59,9 @@ def analyze_numbers4():
     print(f"Среднее чисел кратных 9: {sum_nums_multiples_9 / len(nums_multiples_9)}")
 
 
-analyze_numbers4()
+def line_symbol():
+    length = int(input("Enter a number: "))
+    symbol = input("Enter a symbol: ")
+
+    for i in range(length):
+        print(symbol)
