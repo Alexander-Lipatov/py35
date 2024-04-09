@@ -56,12 +56,61 @@ def analyze_numbers4():
 
     print(f"Среднее четных: {sum_even_numbers / len(even_numbers)}")
     print(f"Среднее нечетных: {sum_odd_numbers / len(odd_numbers)}")
-    print(f"Среднее чисел кратных 9: {sum_nums_multiples_9 / len(nums_multiples_9)}")
+    print(f"Среднее чисел кратных 9: {
+          sum_nums_multiples_9 / len(nums_multiples_9)}")
 
 
-def line_symbol():
-    length = int(input("Enter a number: "))
-    symbol = input("Enter a symbol: ")
+def positive_or_negative():
+    while True:
+        try:
 
-    for i in range(length):
-        print(symbol)
+            number = int(input("Enter a number: "))
+            if number == 7:
+                print(f"Good bye")
+                break
+            if number == 0:
+                print("Number is equal to zero")
+            if number > 0:
+                print(f"Positive number: {number}")
+            elif number < 0:
+                print(f"Negative number: {number}")
+            else:
+                print(f"Invalid number: {number}")
+        except ValueError:
+            print("Invalid number")
+
+
+def x_y_degree():
+    while True:
+        try:
+
+            x = int(input("x: "))
+            y = int(input("y: "))
+            print(x**y)
+        except Exception as e:
+            print(e)
+
+
+
+def whole_numbers():
+    count=0
+    for number in range(100, 1000):
+        a, b, c = str(number)
+        if a==b or a==c or b==c:
+            count+=1
+    print(count)
+
+
+
+def whole_numbers2():
+    count = 0
+
+    for num in range(100, 10000):
+        digits = str(num)
+        if len((digits)) == len(digits):  # Проверяем, все ли цифры уникальны
+            count += 1
+
+
+    print("Количество чисел с уникальными цифрами от 100 до 9999:", count)
+
+whole_numbers2()
