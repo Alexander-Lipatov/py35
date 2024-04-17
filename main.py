@@ -110,7 +110,7 @@ def PZ_04_3_task1():
         
         if i > 0:
             positive_count+=1
-            if positive_count > 0:
+            if positive_count > 1: 
                 positive_el.append(i)
                 
         
