@@ -1,7 +1,7 @@
 
 import string
 import random
-
+import time
 import re
 
 
@@ -125,3 +125,75 @@ def PZ_04_3_task1():
 
 
 PZ_04_3_task1()
+
+
+def func(i:int, b: bool)-> list:
+    return [i, b]
+
+
+print(func('1', True))
+
+
+def func2(i:int, b: bool)-> list:
+    return [i, b]
+
+
+def main(i):
+    print(i)
+    time.sleep(1/10)
+    return main(i+1)
+
+# print(main(0))
+
+
+def text_Bill_Gates():
+    print(f'''
+          “Don't compare yourself with anyone in this world…
+          if you do so, you are insulting yourself.”
+                                                    Bill Gates
+          ''')
+    
+# text_Bill_Gates()
+
+# Напишите функцию, которая принимает два числа
+# в качестве параметра и отображает все четные числа
+# между ними.
+
+def func3(a: int, b: int) -> None:
+    for i in range(a, b + 1):
+        if i % 2 == 0:
+            print(i)
+
+
+# func3(1, 10)
+
+
+# Напишите функцию, которая отображает пустой или
+# заполненный квадрат из некоторого символа. Функция
+# принимает в качестве параметров: длину стороны ква-
+# драта, символ и переменную логического типа:
+# ■ если она равна True, квадрат заполненный;
+# ■ если False, квадрат пустой.
+
+def square(lenght:int, char:str, is_empty: bool)-> str:
+    print(lenght)
+    string = ""
+    for y in range(lenght):
+        for x in range(lenght):
+            if is_empty:
+                if y==lenght-1:
+                    string += ' '+char+' '
+                elif y == 0:
+                    string += ' '+char+' '
+            else:
+                string += ' '+char+' '
+        string+='\n'
+
+                
+    print(string)
+square(11, "*", True)
+
+
+
+
+
