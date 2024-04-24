@@ -324,3 +324,52 @@ def degree_number_list(degree=1, list=[]):
 
 # Написать рекурсивную функцию нахождения наи-
 # большего общего делителя двух целых чисел.
+
+
+class Obj:
+    pass
+
+def func(a, b:list[Obj]):
+    if b == 0:
+        return a
+    return func(b, a % b)
+
+print(func(18, 4))
+
+
+number = random.randrange(1000, 9999)
+
+def bulls_and_cows(user_number:int):
+    user_number = int(input("Please enter number"))
+    cows = 0
+    bulls = 0
+    # print(number)
+
+
+
+def sortSecond(val):
+    
+    print('val[0]')
+    print(val[0])
+    print('val[1]')
+    print(val[1])
+    return val[0] 
+
+# list1 to demonstrate the use of sorting 
+# using second key 
+list1 = [(4,2),(1,3),(7,1)]
+
+# sorts the array in ascending according to 
+# second element
+list1.sort(key=sortSecond) 
+print(list1)
+
+# sorts the array in descending according to
+# second element
+list1.sort(key=sortSecond,reverse=True)
+print(list1)
+
+    
+
+
+
