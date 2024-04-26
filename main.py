@@ -282,10 +282,10 @@ def simple_list(list):
         for i in range(2, num):
             if num % i == 0:
                 k = k+1
-        if k==0:
-            count+=1
+        if k == 0:
+            count += 1
             lst.append(num)
-    print(lst)         
+    print(lst)
     return count
 
 
@@ -303,12 +303,15 @@ def remove_number(list, number):
     list.remove(number)
     return 1 + remove_number(list, number)
 
+
 print('remove_number', remove_number([5, 101, 7, 101], 101))
 
-def extend_lists(list1:list, list2:list)->list:
+
+def extend_lists(list1: list, list2: list) -> list:
     return list1+list2
 
 # print(extend_lists([1,2,3], [9,8,7]))
+
 
 def degree_number_list(degree=1, list=[]):
     new_list = []
@@ -329,47 +332,48 @@ def degree_number_list(degree=1, list=[]):
 class Obj:
     pass
 
-def func(a, b:list[Obj]):
+
+def func(a, b: list[Obj]):
     if b == 0:
         return a
     return func(b, a % b)
+
 
 print(func(18, 4))
 
 
 number = random.randrange(1000, 9999)
 
-def bulls_and_cows(user_number:int):
+
+def bulls_and_cows(user_number: int):
     user_number = int(input("Please enter number"))
     cows = 0
     bulls = 0
     # print(number)
 
 
-
 def sortSecond(val):
-    
+
     print('val[0]')
     print(val[0])
     print('val[1]')
     print(val[1])
-    return val[0] 
+    return val[0]
 
-# list1 to demonstrate the use of sorting 
-# using second key 
-list1 = [(4,2),(1,3),(7,1)]
 
-# sorts the array in ascending according to 
+# list1 to demonstrate the use of sorting
+# using second key
+list1 = [(4, 2), (1, 3), (7, 1)]
+
+# sorts the array in ascending according to
 # second element
-list1.sort(key=sortSecond) 
-print(list1)
+# list1.sort(key=sortSecond)
+# print(list1)
 
 # sorts the array in descending according to
 # second element
-list1.sort(key=sortSecond,reverse=True)
-print(list1)
-
-    
+# list1.sort(key=sortSecond,reverse=True)
+# print(list1)
 
 
 # сортировка и поиск
@@ -382,7 +386,7 @@ print(list1)
 # Остальную часть списка не сортировать, а расположить
 # в обратном порядке.
 
-def taks_1_sort(list:list):
+def taks_1_sort(list: list):
     print(list)
     if sum(list)/len(list) > 0:
         start_list = sorted(list[:len(list)//3*2])
@@ -390,16 +394,187 @@ def taks_1_sort(list:list):
         return start_list + end_list
     else:
         start_list = sorted(list[:len(list)//3])
-        end_list= list[len(list)//3:][::-1]
+        end_list = list[len(list)//3:][::-1]
         return start_list + end_list
 
-print(taks_1_sort([8,-5,3,-4,5,2,-7,8,-33,7,8,1]))
+# print(taks_1_sort([8,-5,3,-4,5,2,-7,8,-33,7,8,1]))
+
 
 def grade():
-    evaluations_list = [random.randint(1,13) for _ in range(10)]
-    print(evaluations_list)
+    evaluations_list = [random.randint(8, 13) for _ in range(10)]
+    while True:
+        variant = input(
+            'выбрать действие: \n 1 - вывести список оценок \n 2 - изменить оценку \n 3 - Проверить стипендию \n 4 - Сортировка оценок \n')
+        match variant:
+            case '1':
+                print(evaluations_list)
+            case '2':
+                try:
+                    old = int(input('выбрать элемент для пересдачи: '))
+                    new = int(input('поставить новую оценку: '))
+                    evaluations_list[old-1] = int(new)
+                except Exception:
+                    print('Ошибка ввода')
+                    continue
+            case '3':
+                average = sum(evaluations_list) / len(evaluations_list)
+                if average > 10.7:
+                    print(f'Стипендия доступна, ваша средняя оценка {average}')
+                else:
+                    print('Стипендия недоступна')
+            case '4':
+                print(sorted(evaluations_list))
+            case _:
+                break
 
-    input_params = input()
-    
 
-grade()
+# Написать программу, реализующую сортировку списка
+# методом усовершенствованной сортировки пузырьковым
+# методом. Усовершенствование состоит в том, чтобы ана-
+# лизировать количество перестановок на каждом шагу, если
+# это количество равно нулю, то продолжать сортировку
+# нет смысла — список отсортирован.
+
+def advanced_bubble_sorting(list: list):
+
+    for i in range(len(list)-1):
+        for j in range(len(list)-1-i):
+            if list[j] > list[i]:
+                list[j], list[i] = list[i], list[j]
+
+    return list
+
+# print(advanced_bubble_sorting([random.randint(1, 1000) for _ in range(1000)]))
+
+
+# Написать программу «справочник». Создать два списка
+# целых. Один список хранит идентификационные коды,
+# второй — телефонные номера. Реализовать меню для
+# пользователя:
+# ■ Отсортировать по идентификационным кодам;
+# ■ Отсортировать по номерам телефона;
+# ■ Вывести список пользователей с кодами и телефонами;
+# ■ Выход.
+
+def reference():
+
+    def random_list(i, j, len):
+        unique = []
+        count = 0
+        while count < len:
+            random_number = random.randint(i, j)
+            if random_number not in unique:
+                unique.append(random_number)
+                count += 1
+        return unique
+
+    def shell(list, num):
+        main = num
+        second = 1 if num == 0 else 0
+        n = len(list[main])
+        d = n // 2
+        while d > 0:
+            for i in range(d, n):
+                j = i
+                t = list[main][i]
+                z = list[second][i]
+                while j >= d and list[main][j - d] > t:
+                    list[main][j] = list[main][j - d]
+                    list[second][j] = list[second][j - d]
+                    j -= d
+                list[main][j] = t
+                list[second][j] = z
+            d //= 2
+        return list
+
+    list_id = random_list(1, 100, 10)
+    list_phone = random_list(100000, 999999, 10)
+    main_list = [list_id, list_phone]
+    zip_list = list(zip(list_id, list_phone))
+    print(main_list)
+
+    while True:
+        variant = input(
+            'выбрать действие: \n 1 - Отсортировать по идентификационным кодам; \n 2 - Отсортировать по номерам телефона; \n 3 - .sort(id); \n 4 - .sort(phone) \n')
+        match variant:
+            case '1':
+                shell(main_list, 0)
+                print(main_list)
+            case '2':
+                shell(main_list, 1)
+                print(main_list)
+
+            case '3':
+                zip_list.sort(key=lambda x: x[0])
+                print(zip_list)
+            case '4':
+                zip_list.sort(key=lambda x: x[1])
+                print(zip_list)
+
+            case _:
+                break
+# reference()
+
+
+# Написать программу «книги». Создать два списка
+# 1 - название, 2 - годы выпуска. Реализовать меню для пользователя:
+# ■ Отсортировать по названию книг;
+# ■ Отсортировать по годам выпуска;
+# ■ Вывести список книг с названиями и годами выпуска;
+# ■ Выход;
+
+
+def books():
+    list_name = [''.join(random.sample((string.ascii_lowercase), 6))
+                 for _ in range(10)]
+    list_year = [random.randint(1900, 2021) for _ in range(10)]
+    main_list = list(zip(list_name, list_year))
+
+    while True:
+        variant = input('выбрать действие: \n 1 - Отсортировать по названию книг; \n 2 - Отсортировать по годам выпуска; \n 3 - Вывести список книг с названиями и годами выпуска; \n 4 - Выход \n')
+        match variant:
+            case '1':
+                main_list.sort(key=lambda tup: tup[0])
+                print(main_list)
+            case '2':
+                main_list.sort(key=lambda tup: tup[1])
+                print(main_list)
+            case '3':
+                for name, year in main_list:
+                    print(f'{name} - {year}')
+            case _:
+                break
+
+
+# books()
+
+
+def five_lists():
+    list_1 = [random.randint(1, 100) for _ in range(10)]
+    list_2 = [random.randint(1, 100) for _ in range(10)]
+    list_3 = [random.randint(1, 100) for _ in range(10)]
+    list_4 = [random.randint(1, 100) for _ in range(10)]
+
+    list_5 = list_1 + list_2 + list_3 + list_4
+    print(list_5)
+    while True:
+        variant = input(' 1-по убыванию \n 2-по возрастанию \n 3-найти значение: ')
+        match variant:
+            case '1':
+                list_5.sort()
+                print(list_5)
+            case '2':
+                list_5.sort(reverse=True)
+                print(list_5)
+            case '3': 
+                search_value = input('какое значение будем искать:')
+                for value in list_5:
+                    if value == int(search_value):
+                        print(f'Значение {value} найдено под индексом {list_5.index(value)}')
+                        break
+                else: 
+                    print(f'Значение {search_value} не найдено')
+            case _:
+                break
+
+five_lists()
