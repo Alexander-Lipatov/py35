@@ -372,4 +372,34 @@ print(list1)
     
 
 
+# сортировка и поиск
 
+# task_1
+
+# Необходимо отсортировать первые две трети списка
+# в порядке возрастания, если среднее арифметическое
+# всех элементов больше нуля; иначе — лишь первую треть.
+# Остальную часть списка не сортировать, а расположить
+# в обратном порядке.
+
+def taks_1_sort(list:list):
+    print(list)
+    if sum(list)/len(list) > 0:
+        start_list = sorted(list[:len(list)//3*2])
+        end_list = list[len(list)//3*2:][::-1]
+        return start_list + end_list
+    else:
+        start_list = sorted(list[:len(list)//3])
+        end_list= list[len(list)//3:][::-1]
+        return start_list + end_list
+
+print(taks_1_sort([8,-5,3,-4,5,2,-7,8,-33,7,8,1]))
+
+def grade():
+    evaluations_list = [random.randint(1,13) for _ in range(10)]
+    print(evaluations_list)
+
+    input_params = input()
+    
+
+grade()
