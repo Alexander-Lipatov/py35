@@ -558,7 +558,8 @@ def five_lists():
     list_5 = list_1 + list_2 + list_3 + list_4
     print(list_5)
     while True:
-        variant = input(' 1-по убыванию \n 2-по возрастанию \n 3-найти значение: ')
+        variant = input(
+            ' 1-по убыванию \n 2-по возрастанию \n 3-найти значение: ')
         match variant:
             case '1':
                 list_5.sort()
@@ -566,15 +567,115 @@ def five_lists():
             case '2':
                 list_5.sort(reverse=True)
                 print(list_5)
-            case '3': 
+            case '3':
                 search_value = input('какое значение будем искать:')
                 for value in list_5:
                     if value == int(search_value):
-                        print(f'Значение {value} найдено под индексом {list_5.index(value)}')
+                        print(f'Значение {value} найдено под индексом {\
+                              list_5.index(value)}')
                         break
-                else: 
+                else:
                     print(f'Значение {search_value} не найдено')
             case _:
                 break
 
-five_lists()
+# five_lists()
+
+
+# dict = {'key': 'value', 'key': 'value', 'key': 'value'}
+
+# for key in dict.keys():
+#     dict[key] = '123'
+
+# class Dict(dict):
+#     def __new__(cls, *args, **kwargs):
+#         self = dict.__new__(cls, *args, **kwargs)
+#         self.__dict__ = self
+#         return self
+# d = Dict(dict)\
+# print(d.key)
+
+
+# https://habr.com/ru/articles/129201/
+
+tuple1 = (1, 2, 3, 4, 5, 6, 7, 8, 9)
+tuple2 = (6, 7, 8, 9, 10, 11, 12)
+tuple3 = (10, 11, 12, 13, 14, 15)
+
+
+def unic_tuple(*args, **kwargs):
+    unic = set()
+    for tuple in args:
+        for value in tuple:
+            unic.add(value)
+    return unic
+
+
+def unic_tuple2(*args, **kwargs):
+    unic = set()
+    for tuple in args:
+        tup = set(tuple)
+
+    return unic
+
+
+# unic_tuple(tuple1, tuple2, tuple3
+
+print('____________________________________________')
+# Создайте программу, хранящую информацию о вели-
+# ких баскетболистах. Нужно хранить ФИО баскетболиста и
+# его рост. Требуется реализовать возможность добавления,
+# удаления, поиска, замены данных. Используйте словарь
+# для хранения информации.
+
+def baskedball_players():
+    players = list()
+
+    def add_player(name: str, height: int):
+        player = dict()
+        player['name'] = name
+        player['height'] = height
+        players.append(player)
+        print(players)
+
+
+    def delete_player(name: str):
+        for player in players:
+            if player['name'] == name:
+                players.remove(player)
+                break
+        print(players)
+
+    def search(text):
+        for player in players:
+            if player['name'] == text:
+                print(player)
+                break
+        else:
+            print(f'Игрок {text} не найден')
+
+    def change_player(old_name, new_name, hight):
+        for player in players:
+            if player['name'] == old_name:
+                player['name'] = new_name
+                player['height'] = hight
+                break
+        else:
+            print(f'Игрок {old_name} не найден')
+
+    add_player('player-1', 150)
+    add_player('player-2', 160)
+    add_player('player-3', 190)
+
+    delete_player('player-2')
+    search('player-1')
+    change_player('player-3', 'player-9', 202)
+
+    print(players)
+    return players
+
+
+# baskedball_players()
+
+
+
