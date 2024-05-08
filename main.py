@@ -678,4 +678,64 @@ def baskedball_players():
 # baskedball_players()
 
 
+def files():
+    try:
+        file = open('./text.txt', 'rt',)
+        print(file.read())
+        file.close()
+    except Exception as e:
+        print('файл не найден', e)
 
+
+
+# Дано два текстовых файла. Выяснить, совпадают ли
+# их строки. Если нет, то вывести несовпадающую строку
+# из каждого файла.
+
+def compare_files():
+    try:
+        file1 = open('./text.txt', 'rt',)
+        file2 = open('./text2.txt', 'rt',)
+        f1 = file1.read()
+        f2 = file2.read()
+        if f1 != f2:
+            print(f1)
+            print(f2)
+            return False
+        return True
+    except Exception as e:
+        print(e)
+
+
+# print(compare_files())
+
+
+# Дан текстовый файл. Необходимо создать новый файл
+# и записать в него следующую статистику по исходному
+# файлу:
+# ■ Количество символов;
+# ■ Количество строк;
+# ■ Количество гласных букв;
+# ■ Количество согласных букв;
+# ■ Количество цифр.
+
+def statistics_file():
+    count_char = 0
+    count_line = 0
+    count_vowels = 0
+    count_consonants = 0
+    count_numbers = 0
+    try:
+        file = open('./text.txt', 'rt',)
+        f = file.readlines()
+        print(f)
+        count_char = len(file.read())
+        count_line = len()
+        count_numbers = file.readlines()
+        # print(f'Количество символов: {len(f)}')
+        # print(f'Количество строк: {f.count("\n")}')
+
+    except Exception as e:
+        print('Ошибка', e)
+
+statistics_file()
