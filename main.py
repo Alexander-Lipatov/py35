@@ -571,7 +571,7 @@ def five_lists():
                 search_value = input('какое значение будем искать:')
                 for value in list_5:
                     if value == int(search_value):
-                        print(f'Значение {value} найдено под индексом {\
+                        print(f'Значение {value} найдено под индексом {
                               list_5.index(value)}')
                         break
                 else:
@@ -628,6 +628,7 @@ print('____________________________________________')
 # удаления, поиска, замены данных. Используйте словарь
 # для хранения информации.
 
+
 def baskedball_players():
     players = list()
 
@@ -637,7 +638,6 @@ def baskedball_players():
         player['height'] = height
         players.append(player)
         print(players)
-
 
     def delete_player(name: str):
         for player in players:
@@ -687,7 +687,6 @@ def files():
         print('файл не найден', e)
 
 
-
 # Дано два текстовых файла. Выяснить, совпадают ли
 # их строки. Если нет, то вывести несовпадающую строку
 # из каждого файла.
@@ -720,22 +719,154 @@ def compare_files():
 # ■ Количество цифр.
 
 def statistics_file():
-    count_char = 0
     count_line = 0
     count_vowels = 0
     count_consonants = 0
     count_numbers = 0
-    try:
-        file = open('./text.txt', 'rt',)
-        f = file.readlines()
-        print(f)
-        count_char = len(file.read())
-        count_line = len()
-        count_numbers = file.readlines()
-        # print(f'Количество символов: {len(f)}')
-        # print(f'Количество строк: {f.count("\n")}')
+    file = open('./text.txt', 'rt',)
+    f = file.read()
+    count_char = len(f)
+    count_line = f.count('\n')+1
+    count_vowels = len(re.findall(r'(?i)[aeiouy]', f))
+    count_consonants = len(re.findall(r'(?i)(?![aeiouy])[a-z]', f))
+    count_numbers = len(re.findall(r'\d', f))
+    file.close()
 
-    except Exception as e:
-        print('Ошибка', e)
+    file = open('./file_out.txt', 'wt', encoding='utf-8')
+    result = f'Всего символов: {count_char}\nВсего строк: {count_line}\nВсего гласных: {
+        count_vowels}\nВсего согласных: {count_consonants}\nВсего цифр: {count_numbers}'
+    file.write(result)
+    file.close()
+
 
 statistics_file()
+
+
+# Дан текстовый файл. Удалить из него последнюю
+# строку. Результат записать в другой файл.
+def remove_last_line():
+    file = open('./text.txt', 'rt',)
+    f = file.readlines()
+    file.close()
+
+    f.pop()
+
+    new_file = open('./text3.txt', 'wt',)
+    new_file.write(''.join(f))
+    new_file.close()
+
+# remove_last_line()
+
+# Дан текстовый файл. Найти длину самой длинной
+# строки.
+
+
+def max_line_text():
+    max_line = 0
+    count = 0
+    info = {}
+    file = open('./text.txt', 'rt')
+    line_list = file.readlines()
+    for line in line_list:
+        if len(line) > max_line:
+            max_line = len(line)
+            info['id'] = count
+            info['len'] = max_line
+        count += 1
+    file.close()
+    print(info)
+
+# max_line_text()
+
+# Дан текстовый файл. Посчитать сколько раз в нем
+# встречается заданное пользователем слово.
+
+
+def count_user_words():
+    count = 0
+    word = input('Ввудите слово: ')
+    file = open('./text4.txt', 'rt')
+    f = file.read()
+    file.close()
+    # count = f.count(word) // не правильный подсчет
+    for w in f.split():
+        clean_word = w.translate(str.maketrans('', '', string.punctuation))
+        if clean_word == word:
+            count += 1
+    print(f'Слово {word} встречается {count} раз')
+    return count
+
+# count_user_words()
+
+# Дан текстовый файл. Найти и заменить в нем задан-
+# ное слово. Что искать и на что заменять определяется
+# пользователем.
+
+
+def search_and_change_word():
+    word = input('Введите слово которое надо заменить: ')
+    new_word = input('Введите новое слово: ')
+
+    file = open('./text.txt', 'rt')
+    f = file.read()
+    file.close()
+
+    f = f.replace(word, new_word)
+
+    file = open('./text4.txt', 'wt')
+    file.write(f)
+    file.close()
+
+# search_and_change_word()
+
+
+# Напишите информационную систему «Сотрудники».
+# Программа должна обеспечивать ввод данных, редакти-
+# рование данных сотрудника, удаление сотрудника, поиск
+# сотрудника по фамилии, вывод информации обо всех
+# сотрудниках, указанного возраста, или фамилия которых
+# начинается на указанную букву. Организуйте возможность
+# сохранения найденной информации в файл. Также весь
+# список сотрудников сохраняется в файл (при выходе из
+# программы — автоматически, в процессе исполнения
+# программы — по команде пользователя). При старте
+# программы происходит загрузка списка сотрудников из
+# указанного пользователем файла.
+
+#  открыть файл
+# декодировать файл в словарь
+# 1. Добавить сотрудника
+# 2. Удалить сотрудника
+# 3. Редактировать сотрудника
+
+
+def employees():
+    file = open('./employees_db.txt', 'r+t')
+    list_data = file.readlines()
+    
+
+    # key_line = 'id|first_name|last_name|age\n'
+    # if list_data is None:
+    #     content = file.read()
+    #     file.write(key_line.rstrip('\r\n') + '\n' + content)
+
+    def check_employee(first_name, last_name):
+        for line in list_data:
+            if first_name in line and last_name in line:
+                return True
+        return False
+
+    def add_employee(id, first_name, last_name, age):
+        if not check_employee(first_name, last_name):
+            line = f'{id}|{first_name}|{last_name}|{age}\n'
+            file.write(line)
+            print(f'Сотрудник {first_name} {last_name} добавлен')
+        else:
+            print(f'Сотрудник {first_name} {last_name} уже существует')
+
+    add_employee(1, 'Sasha2', 'Lipatov2', 30)
+
+    file.close()
+
+
+employees()
