@@ -3,6 +3,7 @@ import string
 import random
 import time
 import re
+from tabulate import tabulate
 
 
 def polindrom():
@@ -122,14 +123,14 @@ def PZ_04_3_task1():
     print(positive_el)
 
 
-PZ_04_3_task1()
+# PZ_04_3_task1()
 
 
 def func(i: int, b: bool) -> list:
     return [i, b]
 
 
-print(func('1', True))
+# print(func('1', True))
 
 
 def func2(i: int, b: bool) -> list:
@@ -238,7 +239,7 @@ def number_polindrom(number):
     return False
 
 
-print(number_polindrom(123431))
+# print(number_polindrom(123431))
 
 # Напишите функцию, вычисляющую произведение
 # элементов списка целых. Список передаётся в качестве па-
@@ -304,7 +305,7 @@ def remove_number(list, number):
     return 1 + remove_number(list, number)
 
 
-print('remove_number', remove_number([5, 101, 7, 101], 101))
+# print('remove_number', remove_number([5, 101, 7, 101], 101))
 
 
 def extend_lists(list1: list, list2: list) -> list:
@@ -339,7 +340,7 @@ def func(a, b: list[Obj]):
     return func(b, a % b)
 
 
-print(func(18, 4))
+# print(func(18, 4))
 
 
 number = random.randrange(1000, 9999)
@@ -739,7 +740,7 @@ def statistics_file():
     file.close()
 
 
-statistics_file()
+# statistics_file()
 
 
 # Дан текстовый файл. Удалить из него последнюю
@@ -833,40 +834,166 @@ def search_and_change_word():
 # программы происходит загрузка списка сотрудников из
 # указанного пользователем файла.
 
-#  открыть файл
-# декодировать файл в словарь
-# 1. Добавить сотрудника
-# 2. Удалить сотрудника
-# 3. Редактировать сотрудника
-
 
 def employees():
-    file = open('./employees_db.txt', 'r+t')
-    list_data = file.readlines()
-    
-
-    # key_line = 'id|first_name|last_name|age\n'
-    # if list_data is None:
-    #     content = file.read()
-    #     file.write(key_line.rstrip('\r\n') + '\n' + content)
-
-    def check_employee(first_name, last_name):
+    def read_data_from_file():
+        data = list()
+        file = open('./employees_db.txt', 'rt')
+        list_data = file.readlines()
+        file.close()
         for line in list_data:
-            if first_name in line and last_name in line:
+            id, first_name, last_name, age = line.replace('\n', '').split('|')
+            line_data = {
+                'id': id,
+                'first_name': first_name,
+                'last_name': last_name,
+                'age': age
+            }
+            data.append(line_data)
+        print('Данные загружены...')
+        return data
+
+    def write_data_to_file(data):
+        file = open('./employees_db.txt', 'wt')
+        for user in data:
+            file.write(f'{user["id"]}|{user["first_name"]}|{
+                       user["last_name"]}|{user["age"]}\n')
+        file.close()
+        print('Сохранение успешно выполнено...')
+
+    def check_employee(first_name='', last_name='', id=''):
+        for line in data:
+            if first_name == line['first_name'] and last_name == line['last_name'] or id == line['id']:
                 return True
         return False
 
-    def add_employee(id, first_name, last_name, age):
-        if not check_employee(first_name, last_name):
-            line = f'{id}|{first_name}|{last_name}|{age}\n'
-            file.write(line)
-            print(f'Сотрудник {first_name} {last_name} добавлен')
+    def add_employee(id: str, first_name: str, last_name: str, age: str):
+        if not check_employee(first_name=first_name, last_name=last_name):
+            user = {
+                'id': id,
+                'first_name': first_name,
+                'last_name': last_name,
+                'age': age
+            }
+            data.append(user)
+            print(f'Сотрудник {first_name} {last_name} добавлен.')
         else:
-            print(f'Сотрудник {first_name} {last_name} уже существует')
+            print(f'Сотрудник {first_name} {last_name} уже существует.')
 
-    add_employee(1, 'Sasha2', 'Lipatov2', 30)
+    def remove_employees(id: str):
+        for line in data:
+            if id == line['id']:
+                data.remove(line)
+                print(f'Сотрудник {line['first_name']} {
+                    line['last_name']} удален')
+                break
+        else:
+            print(f'Сотрудник c id {id} не найден')
 
-    file.close()
+    def serch_employee(text: str) -> None:
+        if text.isdigit():
+            age = int(text)
+            for line in data:
+                if int(line['age']) == age:
+                    print(line)
+        elif len(text) == 1 and text.isalpha():
+            for line in data:
+                if line['last_name'][0].lower() == text.lower():
+                    print(line)
+        else:
+            for line in data:
+                if text == line['last_name']:
+                    print(line)
+
+    def edit_epmloyee(id, new_first_name=None, new_last_name=None, new_age=None):
+        for user in data:
+            if user['id'] == id:
+                user['first_name'] = new_first_name if not new_first_name is None else user['first_name']
+                user['last_name'] = new_last_name if not new_last_name is None else user['last_name']
+                user['age'] = new_age if not new_age is None else user['age']
+                print(f'Сотрудник {user["first_name"]} {\
+                      user["last_name"]} изменен')
+                break
+
+    menu_list = (
+        'Показать всех сотрудников',
+        'Поиск сотрудников',
+        'Добавить сотрудника',
+        'Изменить данные сотрудника',
+        'Удалить сотрудника',
+        'Сохранить запись в базу',
+        'Выход'
+    )
+
+    data = read_data_from_file()
+
+    while True:
+        options = '\n'.join(
+            [f"{num}. {option}" for num, option in enumerate(menu_list, start=1)])
+        option = input(f'{options}\nВыберите опцию: ')
+
+        print('____________________\n')
+        match option:
+
+            case '1':
+                # Вывести всех сотрудников из базы данных.
+                print('Список сотрудников:')
+                for user in data:
+                    print(f'{user['id']} {user['first_name']} {\
+                          user['last_name']} {user['age']}')
+            case '2':
+                # Поиск сотрудника по фамилии, возрасту или первой букве фамилии.
+                serch_text = input(
+                    'Введите фамилию полностью, возраст сотрудника или первую букву его фамилии:\n')
+                serch_employee(serch_text)
+            case '3':
+                # Добавление нового сотрудника в базу данных.
+                # Получение данных о сотруднике от пользователя.
+                id = int(data[-1]['id']) + 1
+                first_name = input('Введите имя сотрудника: ')
+                last_name = input('Введите фамилию сотрудника: ')
+                age = input('Введите возраст сотрудника: ')
+                add_employee(id, first_name, last_name, age)
+            case '4':
+                # Изменение сотрудника из базы данных.
+                id = input('Введите id сотрудника: ')
+                if check_employee(id=id):
+                    # Если сотрудник существует, пользователь может выбрать, какие данные изменить.
+                    while True:
+                        optiont_edit = input(
+                            '1. Изменить имя.\n2. Изменить фамилию.\n3. Изменить возраст\n0. Назад.\nВыберите опцию: ')
+                        match optiont_edit:
+                            case '1':
+                                new_first_name = input('Введите новое имя: ')
+                                edit_epmloyee(
+                                    id, new_first_name=new_first_name)
+                            case '2':
+                                new_last_name = input(
+                                    'Введите новую фамилию: ')
+                                edit_epmloyee(id, new_last_name=new_last_name)
+                            case '3':
+                                new_age = input('Введите новый возраст: ')
+                                edit_epmloyee(id, new_age=new_age)
+                            case '0':
+                                break
+                            case _:
+                                print('Введите корректный вариант')
+            case '5':
+                # Удаление сотрудника из базы данных.
+                id = input('Введите id сотрудника: ')
+                remove_employees(id)
+            case '6':
+                # Сохранение изменений в файл.
+                write_data_to_file(data)
+            case '7':
+                # Сохранение изменений в файл и выход из программы.
+                write_data_to_file(data)
+                break
+
+            case _:
+                print('Введите корректный вариант')
+
+        print('____________________\n')
 
 
 employees()
