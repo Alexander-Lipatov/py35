@@ -3,7 +3,7 @@ import string
 import random
 import time
 import re
-from tabulate import tabulate
+import os
 
 
 def polindrom():
@@ -838,7 +838,11 @@ def search_and_change_word():
 def employees():
     def read_data_from_file():
         data = list()
-        file = open('./employees_db.txt', 'rt')
+        file = './employees_db.txt'
+        if not os.path.exists(file):
+            new_file = open(file, 'w+')
+            new_file.close()
+        file = open(file, 'rt')
         list_data = file.readlines()
         file.close()
         for line in list_data:
@@ -856,7 +860,7 @@ def employees():
     def write_data_to_file(data):
         file = open('./employees_db.txt', 'wt')
         for user in data:
-            file.write(f'{user["id"]}|{user["first_name"]}|{
+            file.write(f'{user["id"]}|{user["first_name"]}|{\
                        user["last_name"]}|{user["age"]}\n')
         file.close()
         print('Сохранение успешно выполнено...')
@@ -884,7 +888,7 @@ def employees():
         for line in data:
             if id == line['id']:
                 data.remove(line)
-                print(f'Сотрудник {line['first_name']} {
+                print(f'Сотрудник {line['first_name']} {\
                     line['last_name']} удален')
                 break
         else:
@@ -914,6 +918,26 @@ def employees():
                 print(f'Сотрудник {user["first_name"]} {\
                       user["last_name"]} изменен')
                 break
+    def edit_view(id):
+        while True:
+            optiont_edit = input(
+                '1. Изменить имя.\n2. Изменить фамилию.\n3. Изменить возраст\n0. Назад.\nВыберите опцию: ')
+            match optiont_edit:
+                case '1':
+                    new_first_name = input('Введите новое имя: ')
+                    edit_epmloyee(
+                        id, new_first_name=new_first_name)
+                case '2':
+                    new_last_name = input(
+                        'Введите новую фамилию: ')
+                    edit_epmloyee(id, new_last_name=new_last_name)
+                case '3':
+                    new_age = input('Введите новый возраст: ')
+                    edit_epmloyee(id, new_age=new_age)
+                case '0':
+                    break
+                case _:
+                    print('Введите корректный вариант')
 
     menu_list = (
         'Показать всех сотрудников',
@@ -926,21 +950,22 @@ def employees():
     )
 
     data = read_data_from_file()
+    print(not data)
 
     while True:
-        options = '\n'.join(
+        text_option= '\n'.join(
             [f"{num}. {option}" for num, option in enumerate(menu_list, start=1)])
-        option = input(f'{options}\nВыберите опцию: ')
+        option = input(f'{text_option}\nВыберите опцию: ')
 
         print('____________________\n')
         match option:
-
             case '1':
                 # Вывести всех сотрудников из базы данных.
                 print('Список сотрудников:')
+                print(f'ID\tИмя\tФамилия\tВозраст')
                 for user in data:
-                    print(f'{user['id']} {user['first_name']} {\
-                          user['last_name']} {user['age']}')
+                    print(f'{user['id']}\t{user['first_name']}\t{\
+                          user['last_name']}\t{user['age']}')
             case '2':
                 # Поиск сотрудника по фамилии, возрасту или первой букве фамилии.
                 serch_text = input(
@@ -949,7 +974,7 @@ def employees():
             case '3':
                 # Добавление нового сотрудника в базу данных.
                 # Получение данных о сотруднике от пользователя.
-                id = int(data[-1]['id']) + 1
+                id = int(data[-1]['id']) + 1 if len(data) != 0 else 1
                 first_name = input('Введите имя сотрудника: ')
                 last_name = input('Введите фамилию сотрудника: ')
                 age = input('Введите возраст сотрудника: ')
@@ -959,25 +984,7 @@ def employees():
                 id = input('Введите id сотрудника: ')
                 if check_employee(id=id):
                     # Если сотрудник существует, пользователь может выбрать, какие данные изменить.
-                    while True:
-                        optiont_edit = input(
-                            '1. Изменить имя.\n2. Изменить фамилию.\n3. Изменить возраст\n0. Назад.\nВыберите опцию: ')
-                        match optiont_edit:
-                            case '1':
-                                new_first_name = input('Введите новое имя: ')
-                                edit_epmloyee(
-                                    id, new_first_name=new_first_name)
-                            case '2':
-                                new_last_name = input(
-                                    'Введите новую фамилию: ')
-                                edit_epmloyee(id, new_last_name=new_last_name)
-                            case '3':
-                                new_age = input('Введите новый возраст: ')
-                                edit_epmloyee(id, new_age=new_age)
-                            case '0':
-                                break
-                            case _:
-                                print('Введите корректный вариант')
+                    edit_view(id)
             case '5':
                 # Удаление сотрудника из базы данных.
                 id = input('Введите id сотрудника: ')

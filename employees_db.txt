@@ -1,9 +1,1 @@
-3|Sasha2|Lipatov2|32
-4|Sasha2|Lipatov2|31
-5|Sasha2|Lipatov2|26
-6|Sasha2|Lipatov2|10
-8|qwerty|asdfg|100
-9|qwerty|asdfg|100
-10|qwerty|asdfg|100
-11|qwerty|asdfg|100
-12|Ololoshka|Ololoshkin|2024
+1|q|w|12
