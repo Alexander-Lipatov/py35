@@ -4,6 +4,13 @@ import random
 import time
 import re
 import os
+import sys
+
+print(sys.path)
+
+# print(random.randrange(0, 100))
+# print(random.randint(0, 100))
+# print(random.sample(0, 100))
 
 
 def polindrom():
@@ -572,7 +579,7 @@ def five_lists():
                 search_value = input('какое значение будем искать:')
                 for value in list_5:
                     if value == int(search_value):
-                        print(f'Значение {value} найдено под индексом {
+                        print(f'Значение {value} найдено под индексом {\
                               list_5.index(value)}')
                         break
                 else:
@@ -899,15 +906,15 @@ def employees():
             age = int(text)
             for line in data:
                 if int(line['age']) == age:
-                    print(line)
+                    employee_view(data=line)
         elif len(text) == 1 and text.isalpha():
             for line in data:
                 if line['last_name'][0].lower() == text.lower():
-                    print(line)
+                    employee_view(data=line)
         else:
             for line in data:
                 if text == line['last_name']:
-                    print(line)
+                    employee_view(data=line)
 
     def edit_epmloyee(id, new_first_name=None, new_last_name=None, new_age=None):
         for user in data:
@@ -939,6 +946,15 @@ def employees():
                 case _:
                     print('Введите корректный вариант')
 
+    def employee_view(data: list|dict):
+        if isinstance(data, list):
+            for user in data:
+                print(f'{user['id']}\t{user['first_name']}\t{\
+                        user['last_name']}\t{user['age']}')
+        elif isinstance(data, dict):
+            print(f'{data['id']}\t{data['first_name']}\t{\
+                        data['last_name']}\t{data['age']}')
+
     menu_list = (
         'Показать всех сотрудников',
         'Поиск сотрудников',
@@ -950,7 +966,6 @@ def employees():
     )
 
     data = read_data_from_file()
-    print(not data)
 
     while True:
         text_option= '\n'.join(
@@ -963,9 +978,7 @@ def employees():
                 # Вывести всех сотрудников из базы данных.
                 print('Список сотрудников:')
                 print(f'ID\tИмя\tФамилия\tВозраст')
-                for user in data:
-                    print(f'{user['id']}\t{user['first_name']}\t{\
-                          user['last_name']}\t{user['age']}')
+                employee_view(data)
             case '2':
                 # Поиск сотрудника по фамилии, возрасту или первой букве фамилии.
                 serch_text = input(
@@ -1003,4 +1016,4 @@ def employees():
         print('____________________\n')
 
 
-employees()
+# employees()
