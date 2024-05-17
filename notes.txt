@@ -1,0 +1,11 @@
+## Модель исключений Python. Try, except, else, finally. Модули
+https://education.yandex.ru/handbook/python/article/model-isklyuchenij-python-try-except-else-finally-moduli
+
+# Как работает yield
+https://habr.com/ru/articles/132554/
+
+# Unittest — Unit testing framework
+https://docs.python.org/3/library/unittest.html
+
+#  Избегайте рекурсии в Python: вспомните о замыкании
+https://habr.com/ru/companies/skillfactory/articles/542880/

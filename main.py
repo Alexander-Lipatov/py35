@@ -579,7 +579,7 @@ def five_lists():
                 search_value = input('какое значение будем искать:')
                 for value in list_5:
                     if value == int(search_value):
-                        print(f'Значение {value} найдено под индексом {\
+                        print(f'Значение {value} найдено под индексом {
                               list_5.index(value)}')
                         break
                 else:
@@ -627,7 +627,7 @@ def unic_tuple2(*args, **kwargs):
     return unic
 
 
-# unic_tuple(tuple1, tuple2, tuple3
+# unic_tuple(tuple1, tuple2, tuple3)
 
 print('____________________________________________')
 # Создайте программу, хранящую информацию о вели-
@@ -867,7 +867,7 @@ def employees():
     def write_data_to_file(data):
         file = open('./employees_db.txt', 'wt')
         for user in data:
-            file.write(f'{user["id"]}|{user["first_name"]}|{\
+            file.write(f'{user["id"]}|{user["first_name"]}|{
                        user["last_name"]}|{user["age"]}\n')
         file.close()
         print('Сохранение успешно выполнено...')
@@ -895,7 +895,7 @@ def employees():
         for line in data:
             if id == line['id']:
                 data.remove(line)
-                print(f'Сотрудник {line['first_name']} {\
+                print(f'Сотрудник {line['first_name']} {
                     line['last_name']} удален')
                 break
         else:
@@ -922,9 +922,10 @@ def employees():
                 user['first_name'] = new_first_name if not new_first_name is None else user['first_name']
                 user['last_name'] = new_last_name if not new_last_name is None else user['last_name']
                 user['age'] = new_age if not new_age is None else user['age']
-                print(f'Сотрудник {user["first_name"]} {\
+                print(f'Сотрудник {user["first_name"]} {
                       user["last_name"]} изменен')
                 break
+
     def edit_view(id):
         while True:
             optiont_edit = input(
@@ -946,14 +947,14 @@ def employees():
                 case _:
                     print('Введите корректный вариант')
 
-    def employee_view(data: list|dict):
+    def employee_view(data: list | dict):
         if isinstance(data, list):
             for user in data:
-                print(f'{user['id']}\t{user['first_name']}\t{\
-                        user['last_name']}\t{user['age']}')
+                print(f'{user['id']}\t{user['first_name']}\t{
+                    user['last_name']}\t{user['age']}')
         elif isinstance(data, dict):
-            print(f'{data['id']}\t{data['first_name']}\t{\
-                        data['last_name']}\t{data['age']}')
+            print(f'{data['id']}\t{data['first_name']}\t{
+                data['last_name']}\t{data['age']}')
 
     menu_list = (
         'Показать всех сотрудников',
@@ -968,7 +969,7 @@ def employees():
     data = read_data_from_file()
 
     while True:
-        text_option= '\n'.join(
+        text_option = '\n'.join(
             [f"{num}. {option}" for num, option in enumerate(menu_list, start=1)])
         option = input(f'{text_option}\nВыберите опцию: ')
 
@@ -1017,3 +1018,35 @@ def employees():
 
 
 # employees()
+
+# Синтаксис filter()
+
+# filter(in_function|None, iterable)
+# |__filter object
+
+
+# Дан текстовый файл. Необходимо создать новый файл
+# убрав из него все неприемлемые слова. Список неприем-
+# лемых слов находится в другом файле.
+
+def pz_9_2_1_change():
+    list_ignore = ['consectetur', 'voluptatibus', 'repellendus','elit']
+    file = open('./pz_9_2_1_files/text.txt')
+    words_list = file.read()
+    file.close()
+    for word in list_ignore:
+        words_list = words_list.replace(word, '*'*len(word))
+    new_file = open('./pz_9_2_1_files/ignore_words.txt', 'w')
+    new_file.write(words_list)
+    new_file.close()
+
+pz_9_2_1_change()
+
+
+# Написать программу транслитерации с русского на
+# английский и наоборот. Данные для транслитерации
+# берутся из файла и записываются в другой файл. Направ-
+# ление перевода определяется через меню пользователя.
+
+def pz_9_2_2_transliteration():
+    ru_list = with open('./pz_9_2_2_files/rus_words.txt')
