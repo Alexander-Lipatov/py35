@@ -7,5 +7,8 @@ https://habr.com/ru/articles/132554/
 # Unittest — Unit testing framework
 https://docs.python.org/3/library/unittest.html
 
-#  Избегайте рекурсии в Python: вспомните о замыкании
+# Избегайте рекурсии в Python: вспомните о замыкании
 https://habr.com/ru/companies/skillfactory/articles/542880/
+
+# 30 команд Git, необходимых для освоения интерфейса командной строки Git
+https://habr.com/ru/companies/ruvds/articles/599929/
