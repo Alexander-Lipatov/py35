@@ -1049,4 +1049,5 @@ pz_9_2_1_change()
 # ление перевода определяется через меню пользователя.
 
 def pz_9_2_2_transliteration():
-    ru_list = with open('./pz_9_2_2_files/rus_words.txt')
+    # ru_list = with open('./pz_9_2_2_files/rus_words.txt')
+    pass
