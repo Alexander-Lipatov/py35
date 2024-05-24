@@ -6,12 +6,9 @@ import re
 import os
 import sys
 
-print(sys.path)
-
 # print(random.randrange(0, 100))
 # print(random.randint(0, 100))
 # print(random.sample(0, 100))
-
 
 def polindrom():
 
@@ -183,14 +180,14 @@ def func3(a: int, b: int) -> None:
 # ■ если False, квадрат пустой.
 
 
-def square(lenght: int, char: str, is_empty: bool) -> str:
-    print(lenght)
-    string = ""
-    for x in range(l):
-        for y in range(l):
-            pass
+# def square(lenght: int, char: str, is_empty: bool) -> str:
+#     print(lenght)
+#     string = ""
+#     for x in range(l):
+#         for y in range(l):
+#             pass
 
-    print(string)
+#     print(string)
 
 
 # square(11, "*", True)
@@ -1048,3 +1045,27 @@ pz_9_2_1_change()
 # берутся из файла и записываются в другой файл. Направ-
 # ление перевода определяется через меню пользователя.
 
+
+
+
+
+
+
+class Stack:
+    def __init__(self):
+        self.__items = []
+
+    def pop(self):
+        pass
+
+    def push(self):
+        pass
+
+class AddingStack(Stack):
+
+    def __init__(self):
+        Stack.__init__()
+        self.sum = 0
+
+myObj = Stack()
+myObj.__items
