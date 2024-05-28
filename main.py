@@ -10,6 +10,7 @@ import sys
 # print(random.randint(0, 100))
 # print(random.sample(0, 100))
 
+
 def polindrom():
 
     try:
@@ -1027,7 +1028,7 @@ def employees():
 # лемых слов находится в другом файле.
 
 def pz_9_2_1_change():
-    list_ignore = ['consectetur', 'voluptatibus', 'repellendus','elit']
+    list_ignore = ['consectetur', 'voluptatibus', 'repellendus', 'elit']
     file = open('./pz_9_2_1_files/text.txt')
     words_list = file.read()
     file.close()
@@ -1037,6 +1038,7 @@ def pz_9_2_1_change():
     new_file.write(words_list)
     new_file.close()
 
+
 pz_9_2_1_change()
 
 
@@ -1044,11 +1046,6 @@ pz_9_2_1_change()
 # английский и наоборот. Данные для транслитерации
 # берутся из файла и записываются в другой файл. Направ-
 # ление перевода определяется через меню пользователя.
-
-
-
-
-
 
 
 class Stack:
@@ -1061,11 +1058,162 @@ class Stack:
     def push(self):
         pass
 
+
 class AddingStack(Stack):
 
     def __init__(self):
         Stack.__init__()
         self.sum = 0
 
+
 myObj = Stack()
-myObj.__items
+
+
+# Реализуйте класс «Автомобиль». Необходимо хранить
+# в полях класса: название модели, год выпуска, произво-
+# дителя, объем двигателя, цвет машины, цену. Реализуйте
+# методы класса для ввода данных, вывода данных, реа-
+# лизуйте доступ к отдельным полям через методы класса.
+
+class Car:
+    def __init__(self):
+        self.__model = input('Введите модель: ')
+        self.__year = input('Введите год выпуска: ')
+        self.__producer = input('Введите производителя: ')
+        self.__volume = input('Введите объём двигателя: ')
+        self.__color = input('Введите цвет: ')
+        self.__price = input('Введите цену: ')
+
+    def get_params(self):
+        print(f'модель {self.__model}')
+        print(f'год выпуска {self.__year}')
+        print(f'производителя {self.__producer}')
+        print(f'объём двигателя {self.__volume}')
+        print(f'цвет {self.__color}')
+        print(f'цену {self.__price}')
+
+    def get_model(self):
+        print(f'модель {self.__model}')
+
+    def get_yearl(self):
+        print(f'год выпуска {self.__year}')
+
+    def get_producer(self):
+        print(f'производителя {self.__producer}')
+
+    def get_volume(self):
+        print(f'объём двигателя {self.__volume}')
+
+    def get_color(self):
+        print(f'цвет {self.__color}')
+
+    def get_price(self):
+        print(f'цену {self.__price}')
+
+
+# Реализуйте класс «Книга». Необходимо хранить в
+# полях класса: название книги, год выпуска, издателя,
+# жанр, автора, цену. Реализуйте методы класса для ввода
+# данных, вывода данных, реализуйте доступ к отдельным
+# полям через методы класса.
+
+class Book:
+    def __init__(self,
+                 title=None, year=None, publisher=None,
+                 genre=None, author=None, price=None
+                 ):
+        self.__title = title
+        self.__year = year
+        self.__publisher = publisher
+        self.__genre = genre
+        self.__author = author
+        self.__price = price
+
+    def input_data(self):
+        """Метод для ввода данных о книге."""
+        print("Введите данные о книге:")
+        self.__title = input("Название книги: ")
+        self.__year = int(input("Год издания:"))
+        self.__publisher = input("Издатель: ")
+        self.__genre = input("Жанр: ")
+        self.__author = input("Автор: ")
+        self.__price = float(input("Цена: "))
+
+    def output_data(self):
+        """Метод для вывода данных о книге"""
+        print(f"Название книги: {self.__title}")
+        print(f"Год издания: {self.__year}")
+        print(f"Издатель: {self.__publisher}")
+        print(f"Жанр: {self.__genre}")
+        print(f"Автор: {self.__author}")
+        print(f"Цена: {self.__price}")
+
+    def get_title(self):
+        """Метод для получения названия книги."""
+        return self.__title
+
+    def get_year(self):
+        """Метод для получения года издания книги."""
+        return self.__year
+
+    def get_publishself(self):
+        """Метод для получения информации об издателе."""
+        return self.__publisher
+
+    def get_genre(self):
+        """Метод для получения жанра книги."""
+        return self.__genre
+
+    def get_author(self):
+        """Метод для получения информации об авторе."""
+        return self.__author
+
+    def get_price(self):
+        """Метод для получения цены книги."""
+        return self.__price
+
+# Реализуйте класс «Стадион». Необходимо хранить в
+# полях класса: название стадиона, дату открытия, страну,
+# город, вместимость. Реализуйте методы класса для ввода
+# данных, вывода данных, реализуйте доступ к отдельным
+# полям через методы класса.
+
+
+class Studium:
+    def __init__(self):
+        self.__name = None
+        self.__date = None
+        self.__country = None
+        self.__city = None
+        self.__capacity = None
+
+    def input_data(self):
+        self.__name = input('название стадиона: ')
+        self.__date = input('дата открытия: ')
+        self.__country = input('страна: ')
+        self.__city = input('город: ')
+        self.__capacity = input('вместимость: ')
+    
+    def output_data(self):
+        print(f'название стадиона: {self.__name}')
+        print(f'дата открытия: {self.__date}')
+        print(f'страна: {self.__country}')
+        print(f'город: {self.__city}')
+        print(f'вместимость: {self.__capacity}')
+    
+    def get_name(self):
+        return self.__name
+    
+    def get_date(self):
+        return self.__date
+    
+    def get_country(self):
+        return self.__country
+    
+    def get_city(self):
+        return self.__city
+    
+    def get_capacity(self):
+        return self.__capacity
+    
+
