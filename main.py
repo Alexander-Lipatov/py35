@@ -1082,7 +1082,7 @@ class Car:
         self.__producer = input('Введите производителя: ')
         self.__volume = input('Введите объём двигателя: ')
         self.__color = input('Введите цвет: ')
-        self.__price = input('Введите цену: ')
+        self.__price = int(input('Введите цену: '))
 
     def get_params(self):
         print(f'модель {self.__model}')
@@ -1110,6 +1110,24 @@ class Car:
     def get_price(self):
         print(f'цену {self.__price}')
 
+    def set_price(self, new_price):
+        if isinstance(new_price, int):
+            self.__price = new_price
+        elif isinstance(new_price, str) and '%' in new_price:
+            new_price = new_price.split('%')
+            new_price = int(new_price[0])/100
+            self.__price = int(self.__price - (self.__price * new_price))
+        else:
+            print('Некорректный ввод')
+
+# car = Car()
+
+# car.set_price('20%')
+# car.get_price()
+# car.set_price(5000)
+# car.get_price()
+# car.set_price('20')
+# car.get_price()
 
 # Реализуйте класс «Книга». Необходимо хранить в
 # полях класса: название книги, год выпуска, издателя,
@@ -1217,3 +1235,52 @@ class Studium:
         return self.__capacity
     
 
+# Реализуйте класс «Человек». Необходимо хранить в
+# полях класса: ФИО, дату рождения, контактный телефон,
+# город, страну, домашний адрес. Реализуйте методы класса
+# для ввода данных, вывода данных, реализуйте доступ к
+# отдельным полям через методы класса.
+
+class Human:
+    def __init__(self, fio, birthday, tel, city, country, addr):
+        self.__fio = fio
+        self.__birthday = birthday
+        self.__tel = tel
+        self.__city = city
+        self.__country = country
+        self.__addr = addr
+
+    def print_data(self):
+        print(f'ФИО: {self.__fio}')
+        print(f'дата рождения: {self.__birthday}')
+        print(f'контактный телефон: {self.__tel}')
+        print(f'город: {self.__city}')
+        print(f'страна: {self.__country}')
+        print(f'домашний адрес: {self.__addr}')
+
+    @property
+    def fio(self):
+        return self.__fio
+    
+    @fio.setter
+    def fio(self, value):
+        self.__fio = value
+
+
+man = Human('fio', '01.01.2000', '+1234567890', 'Moscow', 'Russia', 'Red Square 1')
+
+man.print_data()
+print(man.fio)
+man.fio = 'asd asd asd'
+print(man.fio)
+    
+
+class Obj:
+    i = 10
+
+    # @staticmethod
+    def func(cls):
+        return cls.i
+    
+q = Obj()
+print(q.func())
