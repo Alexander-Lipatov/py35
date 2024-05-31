@@ -1135,6 +1135,7 @@ class Car:
 # данных, вывода данных, реализуйте доступ к отдельным
 # полям через методы класса.
 
+
 class Book:
     def __init__(self,
                  title=None, year=None, publisher=None,
@@ -1211,29 +1212,29 @@ class Studium:
         self.__country = input('страна: ')
         self.__city = input('город: ')
         self.__capacity = input('вместимость: ')
-    
+
     def output_data(self):
         print(f'название стадиона: {self.__name}')
         print(f'дата открытия: {self.__date}')
         print(f'страна: {self.__country}')
         print(f'город: {self.__city}')
         print(f'вместимость: {self.__capacity}')
-    
+
     def get_name(self):
         return self.__name
-    
+
     def get_date(self):
         return self.__date
-    
+
     def get_country(self):
         return self.__country
-    
+
     def get_city(self):
         return self.__city
-    
+
     def get_capacity(self):
         return self.__capacity
-    
+
 
 # Реализуйте класс «Человек». Необходимо хранить в
 # полях класса: ФИО, дату рождения, контактный телефон,
@@ -1261,26 +1262,129 @@ class Human:
     @property
     def fio(self):
         return self.__fio
-    
+
     @fio.setter
     def fio(self, value):
         self.__fio = value
 
 
-man = Human('fio', '01.01.2000', '+1234567890', 'Moscow', 'Russia', 'Red Square 1')
+man = Human('fio', '01.01.2000', '+1234567890',
+            'Moscow', 'Russia', 'Red Square 1')
 
 man.print_data()
 print(man.fio)
 man.fio = 'asd asd asd'
 print(man.fio)
-    
 
-class Obj:
-    i = 10
 
-    # @staticmethod
-    def func(cls):
-        return cls.i
+# Создайте класс Device, который содержит информа-
+# цию об устройстве.
+# С помощью механизма наследования, реализуйте класс
+# класс Blender (содержит информацию о блендере), класс
+# MeatGrinder (содержит информацию о мясорубке).
+# Каждый из классов должен содержать необходимые
+# для работы методы.
+
+class Device:
+    serial_number = 1
+    def __init__(self,device) -> None:
+        self.serial_number = Device.serial_number
+        self.model = device['model']
+        self.warranty = device['warranty']
+        self.country = device['country']
+        self.__is_turn_on = False
+        Device.serial_number +=1
+
+    def device_turn_on(self)->None:
+        self.__is_turn_on = True
+
+    def device_turn_off(self):
+        self.__is_turn_on = False
+
+blenderModels = {
+    'M5': {
+        
+    }
+}
+
+class Blender(Device):
+    def __init__(
+            self,
+            power_consumption: int,
+            speeds_count: int,
+            turbo: bool,
+            device:dict
+    ) -> None:
+        super(Blender, self).__init__(device)
+        self.power_consumption = power_consumption
+        self.speeds = speeds_count
+        self.turbo = turbo
     
-q = Obj()
-print(q.func())
+    def print(self):
+        print(self.model)
+        print(self.serial_number)
+        print(self.warranty)
+        print(self.country)
+        print(self.power_consumption)
+        print(self.speeds)
+        print(self.turbo)
+
+class BlenderM5(Blender):
+    model = 'M5'
+    power_consumption = 500
+    speeds_count = 3
+    turbo = True
+    countries = {
+        'USA': 2,
+        'China': 1,
+    }
+    def __init__(
+            self,
+            country: str
+    ) -> None:
+        device = {
+            'country': country,
+            'model': BlenderM5.model,
+            'warranty': BlenderM5.countries[country],
+        }
+        super().__init__(BlenderM5.power_consumption,BlenderM5.speeds_count,BlenderM5.turbo,device)
+        self.power_consumption = BlenderM5.power_consumption
+        self.speeds = BlenderM5.speeds_count
+        self.turbo = BlenderM5.turbo
+    
+    def print(self):
+        print(self.model)
+        print(self.serial_number)
+        print(self.warranty)
+        print(self.country)
+        print(self.power_consumption)
+        print(self.speeds)
+        print(self.turbo)
+
+
+class MeatGrinder(Device):
+
+    def __init__(
+            self,
+            model,
+            serial_number,
+            warranty,
+            country
+    ) -> None:
+        super().__init__(model, serial_number, warranty, country)
+
+    def print(self):
+        print(self.model)
+        print(self.serial_number)
+        print(self.warranty)
+        print(self.country)
+
+
+blender = BlenderM5('USA')
+
+# meat_grinder = MeatGrinder('model_meat_grinder', '00002', '12 month', 'China')
+# print(repr(blender.print()))
+blender.print()
+
+# meat_grinder.print()
+
