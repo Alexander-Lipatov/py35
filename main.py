@@ -1,4 +1,5 @@
 
+import math
 import string
 import random
 import time
@@ -1236,45 +1237,10 @@ class Studium:
         return self.__capacity
 
 
-# Реализуйте класс «Человек». Необходимо хранить в
-# полях класса: ФИО, дату рождения, контактный телефон,
-# город, страну, домашний адрес. Реализуйте методы класса
-# для ввода данных, вывода данных, реализуйте доступ к
-# отдельным полям через методы класса.
-
-class Human:
-    def __init__(self, fio, birthday, tel, city, country, addr):
-        self.__fio = fio
-        self.__birthday = birthday
-        self.__tel = tel
-        self.__city = city
-        self.__country = country
-        self.__addr = addr
-
-    def print_data(self):
-        print(f'ФИО: {self.__fio}')
-        print(f'дата рождения: {self.__birthday}')
-        print(f'контактный телефон: {self.__tel}')
-        print(f'город: {self.__city}')
-        print(f'страна: {self.__country}')
-        print(f'домашний адрес: {self.__addr}')
-
-    @property
-    def fio(self):
-        return self.__fio
-
-    @fio.setter
-    def fio(self, value):
-        self.__fio = value
-
-
-man = Human('fio', '01.01.2000', '+1234567890',
-            'Moscow', 'Russia', 'Red Square 1')
-
-man.print_data()
-print(man.fio)
-man.fio = 'asd asd asd'
-print(man.fio)
+# man.print_data()
+# print(man.fio)
+# man.fio = 'asd asd asd'
+# print(man.fio)
 
 
 # Создайте класс Device, который содержит информа-
@@ -1287,25 +1253,28 @@ print(man.fio)
 
 class Device:
     serial_number = 1
-    def __init__(self,device) -> None:
+
+    def __init__(self, device) -> None:
         self.serial_number = Device.serial_number
         self.model = device['model']
         self.warranty = device['warranty']
         self.country = device['country']
         self.__is_turn_on = False
-        Device.serial_number +=1
+        Device.serial_number += 1
 
-    def device_turn_on(self)->None:
+    def device_turn_on(self) -> None:
         self.__is_turn_on = True
 
     def device_turn_off(self):
         self.__is_turn_on = False
 
+
 blenderModels = {
     'M5': {
-        
+
     }
 }
+
 
 class Blender(Device):
     def __init__(
@@ -1313,13 +1282,13 @@ class Blender(Device):
             power_consumption: int,
             speeds_count: int,
             turbo: bool,
-            device:dict
+            device: dict
     ) -> None:
         super(Blender, self).__init__(device)
         self.power_consumption = power_consumption
         self.speeds = speeds_count
         self.turbo = turbo
-    
+
     def print(self):
         print(self.model)
         print(self.serial_number)
@@ -1328,6 +1297,7 @@ class Blender(Device):
         print(self.power_consumption)
         print(self.speeds)
         print(self.turbo)
+
 
 class BlenderM5(Blender):
     model = 'M5'
@@ -1338,6 +1308,7 @@ class BlenderM5(Blender):
         'USA': 2,
         'China': 1,
     }
+
     def __init__(
             self,
             country: str
@@ -1347,11 +1318,12 @@ class BlenderM5(Blender):
             'model': BlenderM5.model,
             'warranty': BlenderM5.countries[country],
         }
-        super().__init__(BlenderM5.power_consumption,BlenderM5.speeds_count,BlenderM5.turbo,device)
+        super().__init__(BlenderM5.power_consumption,
+                         BlenderM5.speeds_count, BlenderM5.turbo, device)
         self.power_consumption = BlenderM5.power_consumption
         self.speeds = BlenderM5.speeds_count
         self.turbo = BlenderM5.turbo
-    
+
     def print(self):
         print(self.model)
         print(self.serial_number)
@@ -1384,7 +1356,241 @@ blender = BlenderM5('USA')
 
 # meat_grinder = MeatGrinder('model_meat_grinder', '00002', '12 month', 'China')
 # print(repr(blender.print()))
-blender.print()
+# blender.print()
 
 # meat_grinder.print()
 
+# К уже реализованному классу «Дробь» добавьте ста-
+# тический метод, который при вызове возвращает коли-
+# чество созданных объектов класса «Дробь».
+
+# Создайте класс для конвертирования температуры из
+# Цельсия в Фаренгейт и наоборот. У класса должно быть
+# два статических метода: для перевода из Цельсия в Фа-
+# ренгейт и для перевода из Фаренгейта в Цельсий. Также
+# класс должен считать количество подсчетов температуры и
+# возвращать это значение с помощью статического метода.
+
+
+class ConverterTemp:
+    count = 0
+
+    @staticmethod
+    def celsius_to_fahrenheit(celsius: float) -> float:
+        ConverterTemp.count += 1
+        return celsius * 1.8 + 32
+
+    @staticmethod
+    def fahrenheit_to_celsium(fahrenheit: float) -> float:
+        ConverterTemp.count += 1
+        return (fahrenheit - 32) / 1.8
+
+    @staticmethod
+    def getCount() -> int:
+        return ConverterTemp.count
+
+
+far = ConverterTemp.celsius_to_fahrenheit(30)
+cel = ConverterTemp.fahrenheit_to_celsium(130)
+print(far)
+print(cel)
+print(ConverterTemp.getCount())
+
+# Создайте класс для перевода из метрической системы
+# в английскую и наоборот. Функциональность необходимо
+# реализовать в виде статических методов. Обязательно
+# реализуйте перевод мер длины.
+
+
+class ConverterMetricSystem:
+
+    @staticmethod
+    def meter_to_feet(meter: float) -> float:
+        return meter * 3.2808
+        passx
+
+    @staticmethod
+    def feet_to_meter(feet: float) -> float:
+        return feet * 0.3048
+
+
+print(ConverterMetricSystem.meter_to_feet(10))
+print(ConverterMetricSystem.feet_to_meter(150))
+
+
+
+print('_________________________________________')
+# Создайте класс для подсчета площади геометрических
+# фигур. Класс должен предоставлять функциональность
+# для подсчета площади треугольника по разным формулам,
+# площади прямоугольника, площади квадрата, площади
+# ромба. Методы класса для подсчета площади должны
+# быть реализованы с помощью статических методов. Также
+# класс должен считать количество подсчетов площади и
+# возвращать это значение с помощью статического метода.
+
+
+class SquareFigures:
+    count = 0
+
+    @staticmethod
+    def triangle_1(a, h):
+        '''Площадь треугольника по стороне и высоте, опущенной на эту сторону: '''
+        SquareFigures.count += 1
+        return 0.5 * a * h
+
+    @staticmethod
+    def triangle_2(m, n, a):
+        '''Площадь треугольника по двум сторонам и углу между ними: '''
+        SquareFigures.count += 1
+
+        return 0.5 * m * n * math.sin(a)
+
+    @staticmethod
+    def rectangle(a, b):
+        SquareFigures.count += 1
+
+        return a * b
+
+    @staticmethod
+    def square(a):
+        SquareFigures.count += 1
+        return a**2
+
+    @staticmethod
+    def rhomb(d1, d2):
+        SquareFigures.count += 1
+        return (d1 * d2) / 2
+
+    @staticmethod
+    def get_count():
+        return SquareFigures.count
+
+
+t1 = SquareFigures.triangle_1(10, 4)
+t2 = SquareFigures.triangle_2(5, 10, 15)
+rect = SquareFigures.rectangle(10, 5)
+sq = SquareFigures.square(10)
+rhomb = SquareFigures.rhomb(10, 5)
+
+print(t1)
+print(t2)
+print(rect)
+print(sq)
+print(rhomb)
+print(SquareFigures.get_count())
+
+
+# Создайте класс для подсчета максимума из четырех
+# аргументов, минимума из четырех аргументов, средне-
+# арифметического из четырех аргументов, факториала
+# аргумента. Функциональность необходимо реализовать
+# в виде статических методов.
+
+
+class ResultFourArgs:
+    @staticmethod
+    def max(*args):
+        return max(args[:4])
+
+    @staticmethod
+    def min(*args):
+        return min(args[:4])
+
+    @staticmethod
+    def average(*args):
+        return sum(args[:4]) / len(args[:4])
+
+
+print(ResultFourArgs.max(4,65,6,4))
+print(ResultFourArgs.min(4,65,6,4))
+print(ResultFourArgs.average(4,65,6,4))
+
+
+
+# Реализуйте класс «Человек». Необходимо хранить в
+# полях класса: ФИО, дату рождения, контактный телефон,
+# город, страну, домашний адрес. Реализуйте методы класса
+# для ввода данных, вывода данных, реализуйте доступ к
+# отдельным полям через методы класса.
+
+# К уже реализованному классу «Человек» добавьте
+# статический метод, который при вызове возвращает ко-
+# личество созданных объектов класса «Человек».
+
+# Создайте класс Human, который будет содержать
+# информацию о человеке.
+# С помощью механизма наследования, реализуйте класс
+# Builder (содержит информацию о строителе), класс Sailor
+# (содержит информацию о моряке), класс Pilot (содержит
+# информацию о летчике).
+# Каждый из классов должен содержать необходимые
+# для работы методы.
+print('_________________HUMAN___________________')
+
+
+class Human:
+    count_human = 0
+    __passport = None
+
+
+    def __init__(self, fio, birthday, tel, city, country, addr):
+        self.__fio = fio
+        self.__birthday = birthday
+        self.__tel = tel
+        self.__city = city
+        self.__country = country
+        self.__addr = addr
+        Human.count_human += 1
+
+    @staticmethod
+    def get_count_human():
+        print(Human.count_human)
+        return Human.count_human
+
+    def print_data(self):
+        print(f'ФИО: {self.__fio}')
+        print(f'дата рождения: {self.__birthday}')
+        print(f'контактный телефон: {self.__tel}')
+        print(f'город: {self.__city}')
+        print(f'страна: {self.__country}')
+        print(f'домашний адрес: {self.__addr}')
+
+    @property
+    def fio(self):
+        return self.__fio
+
+    @fio.setter
+    def fio(self, value):
+        self.__fio = value
+
+
+    @property
+    def passport(self):
+        return self.__passport
+    
+    @passport.setter
+    def passport(self, value):
+        return value
+
+
+class Builder(Human):
+    
+    pass
+    
+
+class Sailor(Human):
+    pass
+    
+
+class Pilot(Human):
+    pass
+
+
+man = Human('fio', '01.01.2000', '+1234567890',
+            'Moscow', 'Russia', 'Red Square 1')
+Human('asda asd', '12.12.1232', '123123123', '123123', 'asdasd', 'asdasdsad')
+Human('asda asd', '12.12.1232', '123123123', '123123', 'asdasd', 'asdasdsad')
+Human('asda asd', '12.12.1232', '123123123', '123123', 'asdasd', 'asdasdsad')
+Human('asda asd', '12.12.1232', '123123123', '123123', 'asdasd', 'asdasdsad')
+Human.get_count_human()
