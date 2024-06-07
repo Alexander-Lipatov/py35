@@ -1575,15 +1575,19 @@ class Human:
 
 
 class Builder(Human):
-    
+    skils = ('Бетонщик', 'Плиточник', 'Штукатур')
     pass
     
 
 class Sailor(Human):
+    skils = ('...', '...', '...')
+
     pass
     
 
 class Pilot(Human):
+    skils = ('...', '...', '...')
+
     pass
 
 
@@ -1592,5 +1596,97 @@ man = Human('fio', '01.01.2000', '+1234567890',
 Human('asda asd', '12.12.1232', '123123123', '123123', 'asdasd', 'asdasdsad')
 Human('asda asd', '12.12.1232', '123123123', '123123', 'asdasd', 'asdasdsad')
 Human('asda asd', '12.12.1232', '123123123', '123123', 'asdasd', 'asdasdsad')
-Human('asda asd', '12.12.1232', '123123123', '123123', 'asdasd', 'asdasdsad')
+pilot = Pilot('asda asd', '12.12.1232', '123123123', '123123', 'asdasd', 'asdasdsad')
 Human.get_count_human()
+print(pilot.skils)
+
+
+from dataclasses import dataclass
+
+@dataclass(init=True, kw_only=True, eq=True, order=True, unsafe_hash=True, repr=False)
+class Person:
+    first_name: str
+    last_name: str
+    age: int
+
+    def __repr__(self) -> str:
+        return f'{self.first_name}, {self.last_name},{self.age}'
+
+    def __delattr__(self, name: str) -> None:
+        print('нельзя удалить', name)
+        del self.__dict__[name]
+
+
+person = Person(first_name='drfsd',last_name='drfsd1',age=247)
+del person.age
+
+
+list1 = [1,2,3,4]
+print(list1)
+del list1
+# print(list1)
+
+# Создайте класс Circle (окружность). Для данного
+# класса реализуйте ряд перегруженных операторов:
+# ■ Проверка на равенство радиусов двух окружностей
+# (операция = =);
+# ■ Сравнения длин двух окружностей (операции >, <,
+# <=,>=);
+# ■ Пропорциональное изменение размеров окружности,
+# путем изменения ее радиуса (операции + - += -=).
+
+
+# __eq__() – для равенства ==
+# __ne__() – для неравенства !=
+# __lt__() – для оператора меньше <
+# __le__() – для оператора меньше или равно <=
+# __gt__() – для оператора больше >
+# __ge__() – для оператора больше или равно >=
+# __ge__() – для оператора больше или равно >=
+# __add__ - +   
+# __sub__ - -
+# __iadd__ - +=
+# __isub__ - -=
+
+
+
+
+
+class Circle:
+    def __init__(self, radius:int):
+        self.radius = radius
+
+    @property
+    def lenght(self):
+        return 2 * math.pi * self.radius
+
+    def __eq__(self, other):
+        return self.radius ==  other.radius
+
+    def __gt__(self, other):
+        return self.lenght > other.lenght
+    
+    def __lt__(self, other):
+        return self.lenght < other.lenght
+
+    def __le__(self, other):
+        return self.lenght <= other.lenght
+
+    def __ge__(self, other):
+        return self.lenght >= other.lenght
+
+    def __add__(self, other:int):
+        return
+
+    def __sub__(self, other:int):
+        pass
+
+    def __iadd__(self, other: int):
+        pass
+
+    def __isub__(self, other:int):
+        pass
+
+c1 = Circle(10)
+c2 = Circle(15)
+print(c1=c2)
