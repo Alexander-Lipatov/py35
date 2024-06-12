@@ -1676,17 +1676,105 @@ class Circle:
         return self.lenght >= other.lenght
 
     def __add__(self, other:int):
-        return
+        return self.radius + other
 
     def __sub__(self, other:int):
-        pass
+        return self.radius - other
 
     def __iadd__(self, other: int):
-        pass
+        return self.radius + other
 
     def __isub__(self, other:int):
-        pass
+        return self.radius - other
 
 c1 = Circle(10)
 c2 = Circle(15)
-print(c1=c2)
+print(c1==c2)
+print(c1>c2)
+print(c1<c2)
+print(c1>=c2)
+print(c1<=c2)
+print(c1+100)
+print(c1-100)
+c1+=11
+c2-=11
+print(c1)
+print(c2)
+
+
+# Создайте класс Complex (комплексное число). Более
+# подробно ознакомиться с комплексными числами можно
+# по ссылке.
+# Создайте перегруженные операторы для реализации
+# арифметических операций для по работе с комплексными
+# числами (операции +, -, *, /).
+
+
+class Complex:
+    
+
+    
+    
+    
+    def __init__(self, real, imag):
+        self.real = real
+        self.imag = imag
+    
+    def __add__(self, other):
+        return Complex(self.real + other.real, self.imag + other.imag)
+    
+    def __sub__(self, other):
+        return Complex(self.real - other.real, self.imag - other.imag)
+    
+    def __mul__(self, other):
+        return Complex(self.real * other.real + self.imag * other.imag * -1, self.real * other.imag + self.imag * other.real)
+    
+    def __truediv__(self, other):
+        z3 = Complex(other.real,-other.imag)
+        delitel = (z3 * other).real
+        z4 = z3* self
+        return Complex(z4.real / delitel, z4.imag / delitel)
+
+
+    def __repr__(self) -> str:
+        return str(self.real) + ("+" if self.imag >=0 else '') + str(self.imag) + 'i'
+
+
+z1 = Complex(-4, 2)
+z2 = Complex(1, -3)
+print(z1, z2)
+print(z1+z2)
+print(z1-z2)
+print(z1*z2)
+print(z1/z2)
+
+
+# Вам необходимо создать класс Airplane (самолет).
+
+# ■ Проверка на равенство типов самолетов (операция
+# = =);
+# ■ Увеличение и уменьшение пассажиров в салоне са-
+# молета (операции + - += -=);
+# ■ Сравнение двух самолетов по максимально возмож-
+# ному количеству пассажиров на борту (операции >
+# < <= >=).
+
+
+
+
+# Создать класс Flat (квартира). Реализовать перегру-
+# женные операторы:
+# ■ Проверка на равенство площадей квартир (операция
+# ==);
+# ■ Проверка на неравенство площадей квартир (опера-
+# ция !=);
+# ■ Сравнение двух квартир по цене (операции > < <= >=).
+
+
+class Flat:
+    def __init__(self):
+        self.square = 0
+        self.price = 0
+
+    def __eq__(self, other) -> bool:
+        return self.square == other.square
