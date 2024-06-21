@@ -1778,3 +1778,36 @@ class Flat:
 
     def __eq__(self, other) -> bool:
         return self.square == other.square
+
+
+
+
+# Создайте функцию, возвращающую список со всеми
+# простыми числами от 0 до 1000
+# Используя механизм декораторов посчитайте сколько
+# секунд, потребовалось для вычисления всех простых чисел.
+# Отобразите на экран количество секунд и простые числа.
+
+
+
+
+
+def benchmark(func):
+    import time
+    
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        func()
+        end = time.time()
+        print('[*] Время выполнения: {} секунд.'.format(end-start))
+    return wrapper
+
+
+@benchmark
+def numbers():
+    l = []
+    for i in range(0, 10000+1):
+        l.append(i)
+    return l
+
+numbers()
