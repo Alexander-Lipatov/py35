@@ -7,6 +7,8 @@ import re
 import os
 import sys
 
+from abc import ABCMeta, abstractmethod
+
 # print(random.randrange(0, 100))
 # print(random.randint(0, 100))
 # print(random.sample(0, 100))
@@ -1814,39 +1816,197 @@ numbers()
 
 
 
-# Паттерн фабричности;
+# Паттерн фабрика;
 
-class IProduct:
+class Car:
+    def __init__(self, name, max_speed, color) -> None:
+        self.name=name
+        self.max_speed = max_speed
+        self.color = color
+
     def release(self):
-        pass
+        print(self.__dict__)
 
-class Car(IProduct):
-    def release(self):
-        print('New Car')
+class ProductFactory:
+    @staticmethod
+    def create_car_BMW(color):
 
-class TruckCar(IProduct):
-    def release(self):
-        print('New Truck Car')
-
-class IWorkShop:
-    def create_product(self):
-        pass
-
-class CarWorkShop(IWorkShop):
-    def create_product(self):
-        return Car()
+        return Car(name='BMW M5', max_speed=100, color=color)
+    @staticmethod
+    def create_car_AUDI(color, ):
+        return Car(name='AUDI A5', max_speed=100, color=color)
     
-class TruckCarWorkShop(IWorkShop):
-    def create_product(self):
-        return TruckCar
-    
-creator = CarWorkShop()
-car = creator.create_product()
+car = ProductFactory.create_car_BMW('black')
+
 car.release()
 
-creator = TruckCarWorkShop()
-truck  = creator.create_product()
-truck.release()
+# creator = TruckCarWorkShop()
+# truck  = creator.create_product()
+# truck.release()
 
 
-  
+# Паттерн абстрактная фабрика;
+
+class IEngine(metaclass=ABCMeta):
+    @abstractmethod
+    def release_engine(self):
+        pass
+
+class JapanesEngine(IEngine):
+
+    def release_engine(self):
+        print('japan engine')
+    
+class RussianEngine(IEngine):
+
+    def release_engine(self):
+        print('russian engine')
+
+    
+class ICar(metaclass=ABCMeta):
+    @abstractmethod
+    def release_car(self, engine:IEngine):
+        pass
+
+class JapanCar(ICar):
+    def release_car(self, engine:IEngine):
+        print('build japan car')
+        engine.release_engine()
+
+
+class RussianCar(ICar):
+    def release_car(self, engine:IEngine):
+        print('build rus car')
+        engine.release_engine()
+
+
+class IFactory(metaclass=ABCMeta):
+    @abstractmethod
+    def create_engine(self) ->IEngine:
+        pass
+
+    @abstractmethod
+    def create_car(self) ->ICar:
+        pass
+
+class JapanesFactory(IFactory):
+    def create_engine(self) ->IEngine:
+        return JapanesEngine()
+
+    def create_car(self) ->ICar:
+        return JapanCar()
+    
+class RussianFactory(IFactory):
+    def create_engine(self) ->IEngine:
+        return RussianEngine()
+
+    def create_car(self) ->ICar:
+        return RussianCar()
+    
+
+# factory = JapanesFactory()
+# j_engine = factory.create_engine()
+# j_car = factory.create_car()
+
+# j_car.release_car(j_engine)
+
+
+
+# Создайте классическую реализацию паттерна Singleton.
+# Протестируйте работу созданного класса.
+class Singleton:
+    __instance = None
+    
+    def __new__(cls, *args, **kwargs):
+        if cls.__instance is None:
+            cls.__instance = super().__new__(cls)
+        return cls.__instance
+    
+    def __init__(self, val) -> None:
+        if not hasattr(self, 'val'):
+            self.val = val
+
+# s1 = Singleton(1)
+# s2 = Singleton(2)
+# print(s1.val)
+# print(s2.val)
+# print(s1 == s2)
+
+# Создайте реализацию паттерна Abstract Factory. Про-
+# тестируйте работу созданного класса.
+
+
+class Device:
+    pass
+
+class Phone(Device):
+    pass
+
+class Laptop(Device):
+    pass
+
+class Kitchen(Device):
+    pass
+
+
+
+
+# class IPhoneFactory(IFactory):
+#     def create_device(self):
+#         return IPhone()
+    
+# class IPadFactory(IFactory):
+
+    
+
+
+
+# Пользователь вводит с клавиатуры набор чисел и путь
+# к файлу для сохранения полученных данных. Необходимо:
+# ■ Сохранить все полученные числа.
+# ■ Найти максимум, минимум. Эти значения сохранить
+# в том же файле.
+# ■ Отобразить числа.
+# ■ Отобразить максимум и минимум.
+# ■ Создать класс для логгирования операций. При созда-
+# нии объекта класса нужно уточнить куда производится
+# логгирование: экран или файл. В программе можно
+# создать только один объект класса. Все действия
+# объекта этого класса.
+
+
+
+class Command:
+    def __init__(self, *args, filename, **kwargs):
+
+        pass
+        
+
+class Logger:
+    def __init__(self, path):
+        self.path = path
+
+    def create_file(self):
+        with open(self.path, 'w') as f:
+            f.write('')
+
+
+# numbers_list = input('numbers input: ').split(' ')
+numbers_list = '1 23 4 5 6 3 121 223'.split(' ')
+listnums = [int(num) for num in numbers_list]
+print(listnums)
+# path_to_file = input('path to file: ')
+path_to_file = './files/'
+filename = 'datatext.txt'
+file = open(path_to_file+filename, 'w')
+file.write(', '.join(listnums) + '\n')
+print(min(listnums))
+file.write(min(listnums)+ '\n')
+print(max(listnums))
+file.write(max(listnums)+ '\n')
+file.close()
+
+file = open(path_to_file+filename, 'r')
+print(file.readline())
+print(file.readline(2))
+print(file.readline(3))
