@@ -1811,3 +1811,42 @@ def numbers():
     return l
 
 numbers()
+
+
+
+# Паттерн фабричности;
+
+class IProduct:
+    def release(self):
+        pass
+
+class Car(IProduct):
+    def release(self):
+        print('New Car')
+
+class TruckCar(IProduct):
+    def release(self):
+        print('New Truck Car')
+
+class IWorkShop:
+    def create_product(self):
+        pass
+
+class CarWorkShop(IWorkShop):
+    def create_product(self):
+        return Car()
+    
+class TruckCarWorkShop(IWorkShop):
+    def create_product(self):
+        return TruckCar
+    
+creator = CarWorkShop()
+car = creator.create_product()
+car.release()
+
+creator = TruckCarWorkShop()
+truck  = creator.create_product()
+truck.release()
+
+
+  
