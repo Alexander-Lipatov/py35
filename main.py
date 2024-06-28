@@ -7,7 +7,7 @@ import re
 import os
 import sys
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta, abstractmethod, ABC
 
 # print(random.randrange(0, 100))
 # print(random.randint(0, 100))
@@ -2001,33 +2001,125 @@ class Logger:
 
 logger = Logger(view='file')
 
+class LoggerNumberInput:
 
-numbers_list = [int(num) for num in input('numbers input: ').split(' ')]
-path_to_file = './files/'
-filename = 'datatext.txt'
-file = open(path_to_file+filename, 'w')
+    def __init__(self):
+        self.numbers_list = [int(num) for num in input('numbers input: ').split(' ')]
 
-logger.log('start')
-min = min(numbers_list)
-logger.log('min:'+ str(min))
-max = max(numbers_list)
-logger.log('max:' + str(max))
+def number_logger():
 
-for num in numbers_list:
-    logger.log(f'write number {num} to file')
-    file.write(str(num) + ', ')
-else:
-    file.write('\n')
+    numbers_list = [int(num) for num in input('numbers input: ').split(' ')]
+    path_to_file = './files/'
+    filename = 'datatext.txt'
+    file = open(path_to_file+filename, 'w')
 
-logger.log('write min number')
-file.write(str(min) + '\n')
-logger.log('write max number')
-file.write(str(max))
-file.close()
-logger.log('end')
+    logger.log('start')
+    min = min(numbers_list)
+    logger.log('min:'+ str(min))
+    max = max(numbers_list)
+    logger.log('max:' + str(max))
+
+    for num in numbers_list:
+        logger.log(f'write number {num} to file')
+        file.write(str(num) + ', ')
+    else:
+        file.write('\n')
+
+    logger.log('write min number')
+    file.write(str(min) + '\n')
+    logger.log('write max number')
+    file.write(str(max))
+    file.close()
+    logger.log('end')
 
 
 # file = open(path_to_file+filename, 'r')
 # print(file.readline())
 # print(file.readline(2))
 # print(file.readline(3))
+
+
+class Shape(ABC):
+    
+    @abstractmethod
+    def area(self):
+        pass
+
+    def clone(self):
+        pass
+
+
+class Point:
+
+    def __init__(self, x, y):
+        self.x, self.y = x, y
+
+    def clone(self)-> object:
+        return Point(self.x, self.y)
+
+class Rectangle(Shape):
+    
+    def __init__(self, p1: Point, p2:Point):
+        self.p1, self.p2 = p1, p2
+
+    def clone(self)->Shape:
+        return Rectangle(self.p1.clone(), self.p2.clone())
+
+
+
+class Circle(Shape):
+    def __init__(self, p: Point, r:float):
+        self.p, self.r = p, r
+
+    def clone(self)->Shape:
+        return Circle(self.p.clone(), self.r)
+    
+
+# myRect = Rectangle(Point(0,0), Point(5,3))
+# myRect2 = myRect.clone()
+
+
+
+# print(myRect)
+# print(myRect2)
+
+
+import datetime
+class LogToFile:
+    def __init__(self, filename) -> None:
+        self.filename= filename
+
+    def log(self, *args):
+        print('log to file', datetime.datetime.now(), *args)
+
+class LogToDisplay:
+
+    def log(self, *args):
+        print('log to display', datetime.datetime.now(), *args)
+
+
+class LoggerAdapter:
+    def __init__(self, logObject) -> None:
+        self.logObject = logObject
+
+    def log(self,*args):
+        self.logObject.log(*args)
+
+
+class Calc:
+    def __init__(self, logger) -> None:
+        self.logget = logger
+        self.x = 0
+
+    def add(self,x ):
+        self.log(self.x, 'add', x)
+        self.x += x
+
+    def log(self, *args):
+        self.logget.log(*args)
+
+c1 = Calc(logger=Logger(LogToDisplay()))
+
+c1.add(5)
+c1.add(10)
+c1.add(100)
