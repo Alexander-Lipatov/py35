@@ -1976,37 +1976,58 @@ class Kitchen(Device):
 
 
 
-class Command:
-    def __init__(self, *args, filename, **kwargs):
-
-        pass
-        
 
 class Logger:
-    def __init__(self, path):
-        self.path = path
+    __instance = None
 
-    def create_file(self):
-        with open(self.path, 'w') as f:
-            f.write('')
+    def __new__(cls, *args, **kwargs):
+        if not cls.__instance:
+            cls.__instance = super(Logger, cls).__new__(cls)
+        return cls.__instance
+    
+    def __init__(self, view:str):
+        if not hasattr(self, 'view'):
+            self.view = view
+
+    def log(self, text):
+        if self.view == 'screen':
+            print(text)
+        elif self.view == 'file':
+            with open('log.txt', 'a') as f:
+                f.write(text + '\n')
+        else:
+            print('view not found')
 
 
-# numbers_list = input('numbers input: ').split(' ')
-numbers_list = '1 23 4 5 6 3 121 223'.split(' ')
-listnums = [int(num) for num in numbers_list]
-print(listnums)
-# path_to_file = input('path to file: ')
+logger = Logger(view='file')
+
+
+numbers_list = [int(num) for num in input('numbers input: ').split(' ')]
 path_to_file = './files/'
 filename = 'datatext.txt'
 file = open(path_to_file+filename, 'w')
-file.write(', '.join(listnums) + '\n')
-print(min(listnums))
-file.write(min(listnums)+ '\n')
-print(max(listnums))
-file.write(max(listnums)+ '\n')
-file.close()
 
-file = open(path_to_file+filename, 'r')
-print(file.readline())
-print(file.readline(2))
-print(file.readline(3))
+logger.log('start')
+min = min(numbers_list)
+logger.log('min:'+ str(min))
+max = max(numbers_list)
+logger.log('max:' + str(max))
+
+for num in numbers_list:
+    logger.log(f'write number {num} to file')
+    file.write(str(num) + ', ')
+else:
+    file.write('\n')
+
+logger.log('write min number')
+file.write(str(min) + '\n')
+logger.log('write max number')
+file.write(str(max))
+file.close()
+logger.log('end')
+
+
+# file = open(path_to_file+filename, 'r')
+# print(file.readline())
+# print(file.readline(2))
+# print(file.readline(3))
