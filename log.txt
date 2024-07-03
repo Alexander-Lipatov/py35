@@ -1,34 +1,8 @@
-start
-min:1
-max:223
-write number 1 to file
-write number 23 to file
-write number 4 to file
-write number 5 to file
-write number 6 to file
-write number 3 to file
-write number 121 to file
-write number 223 to file
-write min number
-write max number
-end
-start
-min:1
-max:1
-write number 1 to file
-write min number
-write max number
-end
-start
-min:1
-max:232
-write number 232 to file
-write number 23 to file
-write number 1 to file
-write number 2 to file
-write number 3 to file
-write number 2 to file
-write number 3 to file
-write min number
-write max number
-end
+2024-06-29 19:32:14.883187: Saving, [10, 20, 12, 5, 1002]
+2024-06-29 19:32:14.883499: max, 5
+2024-06-29 19:32:14.889371: max, 1002
+2024-06-29 19:32:40.129779: Saving, 10, 20, 12, 5, 1002
+2024-06-29 19:32:40.130049: max, 5
+2024-06-29 19:32:40.130192: max, 1002
+2024-06-29 19:46:48.803608: Saving, [10, 20, 201, 10, 1, 100]
+2024-06-29 19:50:27.087191: Saving, [1, 10, 2]

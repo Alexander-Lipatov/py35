@@ -1,4 +1,5 @@
 
+import copy
 import math
 import string
 import random
@@ -2006,6 +2007,8 @@ class LoggerNumberInput:
     def __init__(self):
         self.numbers_list = [int(num) for num in input('numbers input: ').split(' ')]
 
+
+
 def number_logger():
 
     numbers_list = [int(num) for num in input('numbers input: ').split(' ')]
@@ -2039,15 +2042,13 @@ def number_logger():
 # print(file.readline(3))
 
 
+
+# Prototype pattern
 class Shape(ABC):
     
     @abstractmethod
-    def area(self):
-        pass
-
     def clone(self):
         pass
-
 
 class Point:
 
@@ -2056,14 +2057,25 @@ class Point:
 
     def clone(self)-> object:
         return Point(self.x, self.y)
+    
+    def __repr__(self):
+        return f'Point({self.x}, {self.y})'
+    
+    
 
 class Rectangle(Shape):
     
     def __init__(self, p1: Point, p2:Point):
-        self.p1, self.p2 = p1, p2
+        self.p1 = p1
+        self.p2 = p2
 
-    def clone(self)->Shape:
-        return Rectangle(self.p1.clone(), self.p2.clone())
+    def clone(self):
+        return copy.deepcopy(self)
+    
+    def __repr__(self):
+        return f'Rectangle({self.p1}, {self.p2})'
+    
+    
 
 
 
@@ -2071,55 +2083,101 @@ class Circle(Shape):
     def __init__(self, p: Point, r:float):
         self.p, self.r = p, r
 
-    def clone(self)->Shape:
-        return Circle(self.p.clone(), self.r)
+    def clone(self):
+        return copy.copy(self)
     
 
-# myRect = Rectangle(Point(0,0), Point(5,3))
-# myRect2 = myRect.clone()
-
-
+myRect = Rectangle(Point(0,0), Point(5,3))
+myRect2 = myRect.clone()
+myRect2.p1.x = 100
+myRect2.p2.y = -100 
+myRect3 = myRect.clone()
+myRect3.p2.x = 1
+myRect3.p2.y = -30
 
 # print(myRect)
 # print(myRect2)
+# print(myRect3)
 
 
+# Adapter psttern
 import datetime
 class LogToFile:
     def __init__(self, filename) -> None:
-        self.filename= filename
+        self.filename = filename
 
     def log(self, *args):
-        print('log to file', datetime.datetime.now(), *args)
+        with open(self.filename, 'a') as file:
+            file.write(str(datetime.datetime.now()) + ': '+ ', '.join(map(str, args)) + '\n')
 
 class LogToDisplay:
 
     def log(self, *args):
-        print('log to display', datetime.datetime.now(), *args)
+        print('log to display', *args)
 
 
 class LoggerAdapter:
-    def __init__(self, logObject) -> None:
+    def __init__(self, logObject:LogToDisplay|LogToFile) -> None:
         self.logObject = logObject
 
     def log(self,*args):
         self.logObject.log(*args)
 
 
+logger = LoggerAdapter(LogToFile('log.txt'))
 class Calc:
-    def __init__(self, logger) -> None:
-        self.logget = logger
+    def __init__(self) -> None:
+        self.log('__________start______________')
         self.x = 0
 
     def add(self,x ):
-        self.log(self.x, 'add', x)
+        self.log(self.x, 'adkmfdgkdmkdfmd', x)
         self.x += x
 
     def log(self, *args):
-        self.logget.log(*args)
+        logger.log(*args)
 
-c1 = Calc(logger=Logger(LogToDisplay()))
 
-c1.add(5)
-c1.add(10)
-c1.add(100)
+
+# c1 = Calc()
+
+# c1.add(5)
+# c1.add(10)
+# c1.add(100)
+
+
+class NumbersOperation:
+
+    def __init__(self):
+        self.numbers_list = [int(num) for num in input('numbers input: ').split(' ')]
+        self.max_number = None
+        self.min_number = None
+        self.numbers = None
+
+    def save_numbers(self):
+        self.log('Saving', self.numbers_list) 
+
+    def find_min(self):
+        self.min_number = min(self.numbers_list)
+        self.log('find_min', self.min_number)
+        
+    def find_max(self):
+        self.max_number = max(self.numbers_list)
+        self.log('find_max', self.max_number)
+    
+    def log(self, *args):
+        logger.log(*args)
+
+    def build(self):
+        print(self.numbers)
+        print(self.min_number)
+        print(self.max_number)
+
+
+
+app = NumbersOperation()
+app.save_numbers()
+app.find_min()
+app.find_max()
+
+
