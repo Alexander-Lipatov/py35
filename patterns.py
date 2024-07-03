@@ -10,7 +10,6 @@ class LogToFile:
             file.write(str(datetime.datetime.now()) + ': '+ ', '.join(map(str, args)) + '\n')
 
 class LogToDisplay:
-
     def log(self, *args):
         print('log to display', *args)
 
