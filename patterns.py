@@ -36,9 +36,45 @@ class Calc:
         logger.log(*args)
 
 
+# Adapter pattern
+class ModernNotificationService:
+    def send_notification(self, message):
+        print(f"Sending modern notification: {message}")
 
-# c1 = Calc()
+class LegacySMSService:
+    def send_sms(self, text):
+        print(f"Sending SMS: {text}")
 
-# c1.add(5)
-# c1.add(10)
-# c1.add(100)
+class SMSAdapter(ModernNotificationService):
+    def __init__(self, legacy_sms_service):
+        self.legacy_sms_service = legacy_sms_service
+
+    def send_notification(self, message):
+        self.legacy_sms_service.send_sms(message)
+
+# Client code
+if __name__ == "__main__":
+    modern_notification = ModernNotificationService()
+    legacy_sms = LegacySMSService()
+    sms_adapter = SMSAdapter(legacy_sms)
+
+    modern_notification.send_notification("Hello, modern world!")
+    sms_adapter.send_notification("Hello, legacy system!")
+
+
+
+# Decorator pattern
+
+
+class DataSource:
+    def writeData(self, data):
+        pass
+    def readData(self):
+        pass
+
+class FileDecorator(DataSource):
+    
+    def writeData(self, data):
+        pass
+    def readData(self):
+        pass

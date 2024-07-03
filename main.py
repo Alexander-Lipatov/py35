@@ -2070,14 +2070,11 @@ class Rectangle(Shape):
         self.p2 = p2
 
     def clone(self):
-        return copy.deepcopy(self)
+        return Rectangle(self)
     
     def __repr__(self):
         return f'Rectangle({self.p1}, {self.p2})'
     
-    
-
-
 
 class Circle(Shape):
     def __init__(self, p: Point, r:float):
@@ -2146,6 +2143,24 @@ class Calc:
 # c1.add(100)
 
 
+
+def timeit(method):
+
+    def timed(*args, **kw):
+        ts = time.time()
+        result = method(*args, **kw)
+        te = time.time()
+        delta = te - ts
+
+        hours, remainder = divmod(delta, 3600)
+        minutes, seconds = divmod(remainder, 60)
+        logger.log(f'{method.__module__}.{method.__name__} took {int(hours)}:{int(minutes)}:{seconds}')
+
+        return result
+
+    return timed
+
+
 class NumbersOperation:
 
     def __init__(self):
@@ -2154,13 +2169,21 @@ class NumbersOperation:
         self.min_number = None
         self.numbers = None
 
+    def __call__(self, *args, **kwargs):
+        print("__call__")
+        self.__counter += 1
+        return self.__counter
+    
+    @timeit
     def save_numbers(self):
         self.log('Saving', self.numbers_list) 
 
+    @timeit
     def find_min(self):
         self.min_number = min(self.numbers_list)
         self.log('find_min', self.min_number)
-        
+
+    @timeit
     def find_max(self):
         self.max_number = max(self.numbers_list)
         self.log('find_max', self.max_number)
@@ -2179,5 +2202,7 @@ app = NumbersOperation()
 app.save_numbers()
 app.find_min()
 app.find_max()
+
+
 
 
