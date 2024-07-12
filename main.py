@@ -1,6 +1,7 @@
 
 import copy
 import math
+import pickle
 import string
 import random
 import time
@@ -2084,13 +2085,13 @@ class Circle(Shape):
         return copy.copy(self)
     
 
-myRect = Rectangle(Point(0,0), Point(5,3))
-myRect2 = myRect.clone()
-myRect2.p1.x = 100
-myRect2.p2.y = -100 
-myRect3 = myRect.clone()
-myRect3.p2.x = 1
-myRect3.p2.y = -30
+# myRect = Rectangle(Point(0,0), Point(5,3))
+# myRect2 = myRect.clone()
+# myRect2.p1.x = 100
+# myRect2.p2.y = -100 
+# myRect3 = myRect.clone()
+# myRect3.p2.x = 1
+# myRect3.p2.y = -30
 
 # print(myRect)
 # print(myRect2)
@@ -2198,11 +2199,234 @@ class NumbersOperation:
 
 
 
-app = NumbersOperation()
-app.save_numbers()
-app.find_min()
-app.find_max()
+# app = NumbersOperation()
+# app.save_numbers()
+# app.find_min()
+# app.find_max()
 
 
 
 
+class NumberFromFile():
+    def __init__(self, filename:str=None) -> None:
+        if filename is None:
+            self.numbers_list = NumberFromFile.random_numbers_list()
+
+    @staticmethod
+    def random_numbers_list():
+        return [random.randint(0,100) for _ in range(5)]
+
+    def sum_all_numbers(self):
+        self.start()
+        return sum(self.numbers_list)
+    
+    def max_numbers(self):
+        self.start()
+        return max(self.numbers_list)
+    
+    def min_numbers(self):
+        self.start()
+        return min(self.numbers_list)
+    
+    def start(self):
+        
+            self.numbers_list = self.random_numbers_list()
+            # print(self.numbers_list)
+            # print('sum of numbers', self.sum_all_numbers())
+            # print('min of numbers', self.min_numbers())
+            # print('max of numbers', self.max_numbers())
+        
+
+class Proxy(NumberFromFile):
+
+    def sum_all_numbers(self):
+        print('Сумма чисел')
+        return super().sum_all_numbers()
+    
+    def min_numbers(self):
+        print('Минимальное число')
+        return super().min_numbers()
+    
+    def max_numbers(self):
+        print('Максимальное число')
+        return super().max_numbers()
+
+    
+
+def menu(numClass:NumberFromFile):
+    while True:
+        print('1. Выводить случайные числа')
+        print('2. Сумма чисел')
+        print('3. Максимальное число')
+        print('4. Минимальное число')
+        print('5. Выход')
+        choice = input('Выберите пункт меню: ')
+        if choice == '1':
+            print(numClass.max_numbers())
+        if choice == '5':
+            break
+        
+
+# Создайте приложение для работы в библиотеке. Оно
+# должно оперировать следующими сущностями: Книга,
+# Библиотекарь, Читатель. Приложение должно позволять
+# вводить, удалять, изменять, сохранять в файл, загружать из
+# файла, логгировать действия, искать информацию (резуль-
+# таты поиска выводятся на экран или файл) о сущностях.
+# При реализации используйте максимально возможное
+# количество паттернов проектирования.
+
+
+
+
+
+class Book:
+    pass
+
+class LibraryHuman(Human):
+    pass
+
+class ReaderHuman(Human):
+    pass
+
+class Library:
+    pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# class App:
+#     pass
+
+# class Human(object):
+#     def __init__(self, name, age, gender, inn, snils) -> None:
+#         self.name = name
+#         self.age = age
+#         self.gender = gender
+#         self.inn = inn
+#         self.snils = snils
+
+
+# class LibraryHuman(Human):
+#     pass
+
+
+# class ReaderHuman(Human):
+#     pass
+
+# class Library:
+
+#     _books:list[Book] = []
+#     _library_humans: list[LibraryHuman] = []
+#     _readers_humans: list[ReaderHuman] = []
+
+#     # @staticmethod
+#     # def add_book(book: Book):
+#     #     Library._books.append(book)
+#     #     print('Книга добавлена')
+    
+#     # @staticmethod
+#     # def remove_book(book: Book):
+#     #     Library._books.remove(book)
+#     #     print('Книга удалена')
+    
+#     # @staticmethod
+#     # def change_book(old_book: Book, new_book: Book):
+#     #     Library._books[Library._books.index(old_book)] = new_book
+#     #     print('Книга изменена')
+    
+
+#     @staticmethod
+#     def init():
+#         arr = ['books', 'library_humans', 'readers_humans']
+#         for i in arr:
+#             with open(i +'.pk', 'rb') as f:
+#                 Library.__dict__['_'+i].extend(pickle.load(f))
+            
+
+
+#     @staticmethod
+#     def save(el:Book|Human):
+#         name = el.__class__.__name__[0].lower()+el.__class__.__name__[1:]
+#         with open(name+'s.pk', 'wb') as f:
+#             pickle.dump(Library.__dict__['_'+name+'s'], f)
+
+
+#     @staticmethod
+#     def add(el:Book|Human):
+#         name = el.__class__.__name__[0].lower()+el.__class__.__name__[1:]
+#         Library.__dict__['_'+name+'s'].append(el)
+#         Library.save(el)
+        
+
+
+#     def remove(el:Book|Human):
+#         name = el.__class__.__name__[0].lower()+el.__class__.__name__[1:]
+#         Library.__dict__['_'+name+'s'].remove(el)
+#         Library.save(el)
+    
+    
+
+# class Book:
+
+#     idbn =  0
+#     def __init__(self, author, title, year, card=None, taked=False) -> None:
+#         self.author = author
+#         self.title = title
+#         self.year = year
+#         self.taked = taked
+#         Book.idbn +=1
+#         self.card:list[dict] = card if card is not None else []
+#         self.idbn = Book.idbn
+
+#     def take(self, reader:ReaderHuman, library_human:LibraryHuman):
+#         self.taked = True
+#         self.card.append({
+#             'reader':reader, 
+#             'library_human':library_human, 
+#             'return_before':datetime.datetime.now()+datetime.timedelta(days=7),
+#             'returned_before':None
+#         })
+#         Library.save(self)
+
+#     def getBack(self):
+#         self.taked = False
+#         self.card[-1]['returned_before'] = datetime.datetime.now()
+#         Library.save(self)
+
+    
+        
+# class Logger:
+#     pass
+
+
+
+# book = Book('autor', 'title', 2014)
+# Library.add(book)
+# Library.save(book)
+# # Library.init()
