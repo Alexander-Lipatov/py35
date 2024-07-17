@@ -2302,7 +2302,6 @@ class StateManager:
 
     def save_state(self):
         """Сохраняет состояние объекта в файл."""
-        print( """Сохраняет состояние объекта в файл.""")
         with open(self.filename, 'wb') as file:
             pickle.dump(self.obj, file)
 
@@ -2354,15 +2353,21 @@ class Human:
         
 
 class LibraryHuman(Human):
+
     type = 'worker'
-    
+
     def __repr__(self) -> str:
         return f'Работник:[{self.name},{self.year},{self.snils}]'
 
+
 class ReaderHuman(Human):
+
     type='reader'
     books = []
-    
+
+    def __repr__(self) -> str:
+        return f'Читатель:[{self.name},{self.year},{self.snils}]'
+
 
 class Library:
     def __init__(self, address) -> None:
@@ -2370,85 +2375,27 @@ class Library:
         self.address = address
         self.worker_list:List[LibraryHuman] = list()
         self.reader_list:List[ReaderHuman] = list()
-        self._book_list:List[Book] = list()
+        self.book_list:List[Book] = list()
 
-    def save(self):
-        self.manager.save_state()
-
-    def load(self):
-        self.manager.load_state()
-
-    def add_worker(self, worker:LibraryHuman):
-        print('Работник добавлен в библиотеку')
-        self.worker_list.append(worker)
-        self.save()
-
-    def register_reader(self, reader:ReaderHuman):
-        print('Читатель добавлен в библиотеку')
-        self.reader_list.append(reader)
-
-    def borrow_book(self, library_human:LibraryHuman, reader: ReaderHuman, book:Book):
-        pass
-
-    def add_book_to_library(self, book: Book, qty:int=1):
-        print('adding book to library')
-        book = copy.deepcopy(book)
-        book.qty += qty
-        if book in self._books:
-            # реализация проверки книги в базе
-            pass
-        else:
-            self._books.append(book)
 
     def get_all_books(self):
-        return self._books
+        return self.book_list
     
     def get_available_books(self):
-        return [book for book in self._books if not book.is_take]
+        return [book for book in self.book_list if not book.is_take]
     
 
     def __repr__(self):
-        return f'Library(library_number={self.id}, address={self.address}, worker_list={self.worker_list}, reader_list={self.reader_list}, books={self._book_list})'
+        return f'Library( \nlibrary_number={self.id}, \naddress={self.address}, \nworker_list={self.worker_list}, \nreader_list={self.reader_list}, \nbook_list={self._book_list})'
 
-
-
-class Navigated:
-    main_ui = (
-        'Интерфейс библиотекаря', 
-        'Интерфейс читателя', 
-        'Выход'
-        )
-    # book_ui = ('Вывод всех книг', 'Вывод доступных книг', 'Вернуть книгу', 'Выход')
-    def __init__(self) -> None:
-        self._choice = input(''.join([f'{index+1}. {item}\n' for index, item in enumerate(self.main_ui)]))
-        match self._choice:
-            case '1':
-                WorkerNavigate()
-            case '2':
-                self.reader_navigate()
-            case '3':
-                print('Выход из приложения')
-                exit(0)
-            case _:
-                print('Неправильный ввод. Попробуйте снова.')
-                self.__init__()
-class WorkerNavigate(Navigated):
-    worker_ui = (
-        'Операции с книгами', 
-        'Операции с читателем', 
-        'Поиск',
-        'Выход'
-        )
-    reader_ui = ('Удалить читателя', 'Редактировать читателя')
-    book_ui = ('Вывести все книги', 'Вернуть книгу', 'Выдать книгу', 'Выход')
 
 class App:
 
-    
     def __init__(self, address) -> None:
         self.state_manager = StateManager()
         self.data:Library = self.state_manager.get_state()
-        
+        self.menu = Menu(self)
+        self.menu.start()
         if self.data is None:
             self.data = self.create_library(address)
 
@@ -2463,24 +2410,28 @@ class App:
     
     def _get_human(self, obj:ReaderHuman|LibraryHuman, snils:str):
         for human in getattr(self.data, obj.type + '_list'):
-            if human.snils == snils:
+            if human.snils == str(snils):
                 return human
-        return None
+        
+        
 
     def get_worker(self, snils):
-        return self._get_human(LibraryHuman, snils)
+        human = self._get_human(LibraryHuman, snils)
+        if human is None:
+            return ValueError('Работник с таким СНИЛСом не найден')
+        return human
     
     def get_reader(self, snils):
-        return self._get_human(ReaderHuman, snils)
+        human = self._get_human(ReaderHuman, snils)
+        if human is None:
+            return ValueError('Читатель с таким СНИЛСом не найден')
+        return human
 
-# !!!!!!!!!!!!!!!!!!!!!!!!!! дописать текст
     def _create(self, instance:ReaderHuman|LibraryHuman, name, year, gender, inn, snils):
         new_human = instance(name, year, gender, inn, str(snils))
-        print(self.data)
         for human in getattr(self.data, new_human.type + '_list',):
             if new_human.snils == human.snils:
-                text = 
-                print(f'{'Читатель' if new_human.type else new_human.type} уже добавлен в библиотеку')
+                print(f'{'Читатель' if new_human.type == 'reader' else 'Работник'} {human.name} уже добавлен в библиотеку')
                 return None
         return new_human
 
@@ -2499,8 +2450,10 @@ class App:
 
     def _remove_human(self, obj, snils):
         try:
-            worker = self._get_human(obj, snils)
-            getattr(self.data, obj.type+'_list').remove(worker)
+            human = self._get_human(obj, snils)
+            list = getattr(self.data, human.type)
+            print(list)
+            return list.remove(human)
         except Exception:
             print('Работник не найден')
             return None
@@ -2516,16 +2469,164 @@ class App:
 
     def __repr__(self) -> str:
         return f'Выбрана библиотека по адресу {self.data.address}'
+    
+
+class Menu:
+    menu_options = {
+        1: 'Вывести информацию о библиотеке',
+        2: 'Перейти в интерфейс работника',
+        3: 'Перейти в интерфейс директора',
+        4: 'Перейти в интерфейс читателя',
+        5: 'Exit',
+    }
+    menu_admin = {
+        0: 'Выйти из интерфейса',
+        1: 'Добавить работника',
+        2: 'Удалить работника',
+        3: 'Вывести список всех работников',
+        4: 'Добавить читателя',
+        5: 'Удалить читателя',
+        6: 'Вывести список всех читателей',
+        7: 'Добавить книгу',
+        8: 'Вывести список всех книг',
+        9: 'Выдать книгу',
+        10: 'Вернуть книгу',
+        11: 'Назад',
+
+    }
+    menu_worker={
+        0: 'Выйти из интерфейса',
+        1: 'Добавить читателя',
+        2: 'Удалить читателя',
+        3: 'Добавить книгу',
+        4: 'Удалить книгу',
+        5: 'Выдать книгу',
+        6: 'Вернуть книгу',
+        7: 'Вывести список всех читателей',
+        8: 'Вывести список всех работников',
+        9: 'Вывести список всех книг',
+        10: 'Назад',
+
+    }
+    menu_reader={
+        1: 'Забрать книгу',
+        2: 'Вернуть книгу',
+        3: 'Посмотреть список книг',
+        4: 'Выйти из интерфейса',
+    }
 
     
+
+    def menu_admin_ui(self):
+        print('Административный интерфейс библиотеки:')
+        for key in self.menu_admin.keys():
+            print(key, '--', self.menu_admin[key])
+        while(True):
+            option = ''
+            try:
+                option = int(input('Enter your choice: '))
+            except:
+                print('Wrong input. Please enter a number ...')
+            #Check what choice was entered and act accordingly
+            if option == 0:
+                print('Thanks message before exiting')
+                exit()
+            
+            elif option == 1:
+                print(self.instance.data)
+
+            elif option == 11:
+                self.start()
+                
+            else:
+                print('Invalid option. Please enter a number between')
     
-    # @staticmethod
-    # def create_book(title, author, year, genre):
-    #     return Book(title, author, year, genre)
-    
-    # @staticmethod
-    # def create_reader(name, year, gender, inn, snils):
-    #     return ReaderHuman(name, year, gender, inn, snils)
+    def menu_worker_ui(self):
+        print('Рабочий интерфейс библиотеки:')
+        self.print_menu(self.menu_worker)
+        while(True):
+            option = ''
+            try:
+                option = int(input('Enter your choice: '))
+            except:
+                print('Wrong input. Please enter a number ...')
+            #Check what choice was entered and act accordingly
+            if option == 0:
+                print('Thanks message before exiting')
+                exit()
+            
+            elif option == 1:
+                name = input('Введите имя читателя: ')
+                year = int(input('Введите год рождения читателя: '))
+                gender = input('Введите пол читателя (male/female): ')
+                inn = input('Введите ИНН читателя: ')
+                snils = input('Введите СНИЛС читателя: ')
+                self.instance.create_reader(name, year, gender, inn, snils)
+                print('-'*50)
+                self.print_menu(self.menu_worker)
+            
+            elif option == 2:
+                snils = input('Введите СНИЛС читателя для удаления: ')
+                self.instance.remove_reader(snils)
+                print('-'*50)
+                self.print_menu(self.menu_worker)
+
+            elif option == 3:
+                pass
+
+            elif option == 7:
+                print('-'*50)
+                for i in self.instance.data.reader_list:
+                    print(i)
+                else:
+                    input()
+                    print('-'*50)
+                    self.print_menu(self.menu_worker)
+
+            elif option == 10:
+                self.start()
+
+
+
+
+
+
+
+    def __init__(self, instance:App) -> None:
+        self.instance = instance
+
+    def print_menu(self, dict_menu):
+        for key in dict_menu.keys():
+            print(key, '--', dict_menu[key] )
+
+
+    def start(self):
+        while(True):
+            self.print_menu(self.menu_options)
+            option = ''
+            try:
+                option = int(input('Enter your choice: '))
+            except:
+                print('Wrong input. Please enter a number ...')
+            if option == 1:
+                print('-'*50)
+                print(self.instance.data)
+                print('-'*50)
+                input()
+            elif option == 2:
+                print('-'*50)
+                self.menu_worker_ui()
+                print('-'*50)
+                input()
+            elif option == 3:
+                self.menu_admin_ui()
+            elif option == 4:
+                pass
+            elif option == 5:
+                print('Thanks message before exiting')
+                exit()
+            else:
+                print('Invalid option. Please enter a number between')
     
  
 if __name__ == '__main__':
@@ -2534,12 +2635,12 @@ if __name__ == '__main__':
 
 app = App('Main Street 1/1')
 # app.create_worker('sasha',30, 'men', 1, '0-813')
-app.create_worker('qwerty', 2000, 'men', '0000', '0-201')
-app.create_reader('sasha', 2000, 'man', '0000', '0002')
-# w= app.get_worker('0-200')
-# r= app.get_reader('0001')
-# print(w)
-# print(r)
+# app.create_worker('qwerty', 2000, 'men', '0000', '0-201')
+# app.create_reader('sasha', 2000, 'man', '0000', '0002')
+w= app.get_worker('0-201')
+r= app.get_reader('0002')
+print(w)
+print(r)
 # print(app.__dict__)
 
 
