@@ -8,8 +8,9 @@ import time
 import re
 import os
 import sys
-
+from typing import List
 from abc import ABCMeta, abstractmethod, ABC
+import uuid
 
 # print(random.randrange(0, 100))
 # print(random.randint(0, 100))
@@ -2278,19 +2279,301 @@ def menu(numClass:NumberFromFile):
 
 
 
+class StateManager:
+
+    __instance = None
+    
+    def __new__(cls, *args, **kwargs):
+        if cls.__instance is None:
+            cls.__instance = super().__new__(cls)
+        return cls.__instance
+    
+    def __init__(self) -> None:
+        if not hasattr(self, 'initialized'):  # Prevents re-initialization
+            self.filename = 'object_state.pkl'
+            self.initialized = True
+            try:
+                self.obj = self.load_state()
+            except:
+                self.obj = None
+                self.save_state()
+                self.obj = self.load_state()
+
+
+    def save_state(self):
+        """Сохраняет состояние объекта в файл."""
+        print( """Сохраняет состояние объекта в файл.""")
+        with open(self.filename, 'wb') as file:
+            pickle.dump(self.obj, file)
+
+    def load_state(self):
+        """Загружает состояние объекта из файла."""
+        with open(self.filename, 'rb') as file:
+            self.obj = pickle.load(file)
+        return self.obj
+    
+    def get_state(self):
+        return self.obj
+    
+    def set_state(self, new_state):
+        """Updates the state and saves it to the file."""
+        self.obj = new_state
+        self.save_state()
 
 
 class Book:
-    pass
+    _reader = None
+    _libraty_human = None
+    _id = uuid.uuid4()
+
+    def __init__(self, title, author, year, genre, is_take=False, qty=0) -> None:
+        self.title = title
+        self.author = author
+        self.year = year
+        self.genre = genre
+        self.is_take = is_take
+        self.qty = qty
+
+    @property    
+    def id(self):
+        return self._id
+
+    def __repr__(self) -> str:
+        print(self.id)
+        return f'Book(title={self.title}, author={self.author}, year={self.year}, genre={self.genre}, is_take={self.is_take}, qty={self.qty})'
+    
+
+class Human:
+    def __init__(self, name, year, gender, inn, snils) -> None:
+        self.name = name
+        self.year = year
+        self.gender = gender
+        self.inn = inn
+        self.snils = snils
+
+        
 
 class LibraryHuman(Human):
-    pass
+    type = 'worker'
+    
+    def __repr__(self) -> str:
+        return f'Работник:[{self.name},{self.year},{self.snils}]'
 
 class ReaderHuman(Human):
-    pass
+    type='reader'
+    books = []
+    
 
 class Library:
-    pass
+    def __init__(self, address) -> None:
+        self.id = uuid.uuid4()
+        self.address = address
+        self.worker_list:List[LibraryHuman] = list()
+        self.reader_list:List[ReaderHuman] = list()
+        self._book_list:List[Book] = list()
+
+    def save(self):
+        self.manager.save_state()
+
+    def load(self):
+        self.manager.load_state()
+
+    def add_worker(self, worker:LibraryHuman):
+        print('Работник добавлен в библиотеку')
+        self.worker_list.append(worker)
+        self.save()
+
+    def register_reader(self, reader:ReaderHuman):
+        print('Читатель добавлен в библиотеку')
+        self.reader_list.append(reader)
+
+    def borrow_book(self, library_human:LibraryHuman, reader: ReaderHuman, book:Book):
+        pass
+
+    def add_book_to_library(self, book: Book, qty:int=1):
+        print('adding book to library')
+        book = copy.deepcopy(book)
+        book.qty += qty
+        if book in self._books:
+            # реализация проверки книги в базе
+            pass
+        else:
+            self._books.append(book)
+
+    def get_all_books(self):
+        return self._books
+    
+    def get_available_books(self):
+        return [book for book in self._books if not book.is_take]
+    
+
+    def __repr__(self):
+        return f'Library(library_number={self.id}, address={self.address}, worker_list={self.worker_list}, reader_list={self.reader_list}, books={self._book_list})'
+
+
+
+class Navigated:
+    main_ui = (
+        'Интерфейс библиотекаря', 
+        'Интерфейс читателя', 
+        'Выход'
+        )
+    # book_ui = ('Вывод всех книг', 'Вывод доступных книг', 'Вернуть книгу', 'Выход')
+    def __init__(self) -> None:
+        self._choice = input(''.join([f'{index+1}. {item}\n' for index, item in enumerate(self.main_ui)]))
+        match self._choice:
+            case '1':
+                WorkerNavigate()
+            case '2':
+                self.reader_navigate()
+            case '3':
+                print('Выход из приложения')
+                exit(0)
+            case _:
+                print('Неправильный ввод. Попробуйте снова.')
+                self.__init__()
+class WorkerNavigate(Navigated):
+    worker_ui = (
+        'Операции с книгами', 
+        'Операции с читателем', 
+        'Поиск',
+        'Выход'
+        )
+    reader_ui = ('Удалить читателя', 'Редактировать читателя')
+    book_ui = ('Вывести все книги', 'Вернуть книгу', 'Выдать книгу', 'Выход')
+
+class App:
+
+    
+    def __init__(self, address) -> None:
+        self.state_manager = StateManager()
+        self.data:Library = self.state_manager.get_state()
+        
+        if self.data is None:
+            self.data = self.create_library(address)
+
+    def save(self):
+        self.state_manager.set_state(self.data)
+    
+    def create_library(self, address):
+        print('creating library')
+        self.data = Library(address)
+        self.save()
+        return self.data
+    
+    def _get_human(self, obj:ReaderHuman|LibraryHuman, snils:str):
+        for human in getattr(self.data, obj.type + '_list'):
+            if human.snils == snils:
+                return human
+        return None
+
+    def get_worker(self, snils):
+        return self._get_human(LibraryHuman, snils)
+    
+    def get_reader(self, snils):
+        return self._get_human(ReaderHuman, snils)
+
+# !!!!!!!!!!!!!!!!!!!!!!!!!! дописать текст
+    def _create(self, instance:ReaderHuman|LibraryHuman, name, year, gender, inn, snils):
+        new_human = instance(name, year, gender, inn, str(snils))
+        print(self.data)
+        for human in getattr(self.data, new_human.type + '_list',):
+            if new_human.snils == human.snils:
+                text = 
+                print(f'{'Читатель' if new_human.type else new_human.type} уже добавлен в библиотеку')
+                return None
+        return new_human
+
+    def create_worker(self, name, year, gender, inn, snils):
+        # arg_list = input('Введите имя, год рождения, пол, ИНН, СНИЛС работника: ').split(',')
+        new_worker = self._create(LibraryHuman, name, year, gender, inn, snils)
+        if not new_worker is None:
+            self.data.worker_list.append(new_worker)
+            self.save()
+
+    def create_reader(self, name, year, gender, inn, snils):
+        new_reader = self._create(ReaderHuman, name, year, gender, inn, snils)
+        if not new_reader is None:
+            self.data.reader_list.append(new_reader)
+            self.save()
+
+    def _remove_human(self, obj, snils):
+        try:
+            worker = self._get_human(obj, snils)
+            getattr(self.data, obj.type+'_list').remove(worker)
+        except Exception:
+            print('Работник не найден')
+            return None
+        
+    def remove_worker(self, snils):
+        self._remove_human(LibraryHuman, snils)
+        self.save()
+    
+    def remove_reader(self, snils):
+        self._remove_human(ReaderHuman, snils)
+        self.save()
+        
+
+    def __repr__(self) -> str:
+        return f'Выбрана библиотека по адресу {self.data.address}'
+
+    
+    
+    # @staticmethod
+    # def create_book(title, author, year, genre):
+    #     return Book(title, author, year, genre)
+    
+    # @staticmethod
+    # def create_reader(name, year, gender, inn, snils):
+    #     return ReaderHuman(name, year, gender, inn, snils)
+    
+ 
+if __name__ == '__main__':
+    pass    
+
+
+app = App('Main Street 1/1')
+# app.create_worker('sasha',30, 'men', 1, '0-813')
+app.create_worker('qwerty', 2000, 'men', '0000', '0-201')
+app.create_reader('sasha', 2000, 'man', '0000', '0002')
+# w= app.get_worker('0-200')
+# r= app.get_reader('0001')
+# print(w)
+# print(r)
+# print(app.__dict__)
+
+
+
+# app.create_library(1, 'Library 1, Main Street')
+# lib1 = app.choose_library(1)
+# print(lib1)
+# worker = app.create_worker('John Doe', 1900,'men', '12345', '543-210')
+# lib1.add_worker(worker)
+
+# lib1 = app.choose_library(1)
+# print(lib1)
+
+
+
+# lib_human = App.create_library_human('John Doe', 1900, 'men', '12345', '543-210')
+# lib_human2 = App.create_library_human('Jane Doe', 1900, 'woman', '678901', '987-654')
+
+# book1 = App.create_book('Book 1', 'Smith Doe', 1900, 'drama')
+# book2 = App.create_book('Book 2', 'Mike Sally', 1900, 'comedy')
+
+# reader1 = App.create_reader('Alice Johnson', 1900, 'woman', '234567', '987-654')
+# reader2 = App.create_reader('Bob Brown', 1900,'man', '890123', '321-654')
+
+
+# lib1.add_worker(lib_human)
+# lib1.add_worker(lib_human2)
+
+# lib1.add_book_to_library(book=book1,qty=10)
+# lib1.add_book_to_library(book=book2,qty=4)
+
+
+
+# print(lib1.get_all_books())
 
 
 
