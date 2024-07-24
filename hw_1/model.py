@@ -1,17 +1,15 @@
 from abc import ABC
 from statemanager import load, save
-
-class Product(ABC):
-    _data = {}
+from typing import List
+class Product:
+    uid = 0
     
     def __init__(self, *args, **kwargs):
         try:
-            self._data = load()
+            self._data:List[ShoesModel] = load()
         except:
-            self._data = {}
+            self._data:List[ShoesModel] = []
             self.save()
-
-    type = None
 
     def save(self):
         save(self._data)
@@ -19,52 +17,44 @@ class Product(ABC):
     def all(self):
         return self._data
 
-    @staticmethod
-    def create(cls, vendor, category, size, color, price):
-        if cls.type not in ['Men', 'Woman']:
-            raise ValueError("Invalid shoe type. Must be 'Men' or 'Woman'.")
+    def create(self, vendor, category, size, color, price, sex):
+        uid = Product.uid + 1
+        model :ShoesModel = ShoesModel(uid, vendor, category, size, color, price, sex)
+        self._data.append(model)
+        self.save()
+        return model
 
-        data = {
-            'vendor': vendor,
-            'category': category,
-            'size': size,
-            'color': color,
-            'price': price
-        }
-        return cls(**data)
+    def delete(self, uid):
+        for model in self._data:
+            if model.uid == uid:
+                self._data.remove(model)
+                self.save()
+                break
+    
+    def get(self, uid):
+        for model in self._data:
+            if model.uid == uid:
+                return model
+        return None
         
 
-class ShoesModel(Product):
-    def __init__(self, vendor, category, size, color, price):
-        super().__init__()
+class ShoesModel:
+
+    def __init__(self, uid, vendor, category, size, color, price, sex):
+        self.uid = uid
         self.vendor = vendor
         self.category = category
         self.size = size
         self.color = color
         self.price = price
-
-        if self.type not in self._data:
-            self._data[self.type] = []
-
-        self._data[self.type].append(self.get_data())
-        self.save()
-
-    def get_data(self):
-        return {
-            'vendor': self.vendor,
-            'category': self.category,
-            'size': self.size,
-            'color': self.color,
-            'price': self.price
-        }
+        self.sex = sex
 
 
-class MenShoes(ShoesModel):
-    type = 'Men'
 
+    
 
-class WomanShoes(ShoesModel):
-    type = 'Woman'
+# model = Product()
+# model.create('safsd','asdasd',10, 'asdasd', 2000, 'men')
 
 
 # # Пример использования статического метода
