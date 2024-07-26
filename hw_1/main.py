@@ -4,8 +4,8 @@ from controller import Controller
 
 class App:
     model = Product()
-    view = MainWindow()
-    controller = Controller(model, view)
+    controller = Controller(model)
+    view = MainWindow(controller)
 
     @staticmethod
     def run():

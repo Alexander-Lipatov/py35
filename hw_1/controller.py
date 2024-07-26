@@ -1,51 +1,66 @@
 from model import Product
-from view import MainWindow, CreateProductWindow
+from tkinter import messagebox
 
 
 class Controller:
-    def __init__(self, model:Product, view:MainWindow):
+    def __init__(self, model:Product):
         self.model = model
-        self.view = view
-        self.view.btn.config(command=self.add_product)
-
-        self.update_view()
         
-    def update_view(self):
-        data = self.model.all()
-        for i in data:
-            self.view.table.insert("", 'end', values=(
-                i.vendor, 
-                i.category,
-                i.size,
-                i.color,
-                i.price,
-                i.sex
-            ))
+    def get_all_product(self):
+        return self.model.all()
+    
+    def delete_product(self, uid):
+        return self.model.delete(uid)
 
+    def add_product(self, vendor, category, size, color, price, sex):
+        if not self.validate_product_data(vendor,category, size, color,price,sex):
+            return False
+        
+        return self.model.create(
+            vendor,
+            category,
+            size,
+            color,
+            price,
+            sex
+        )
+    
+    def update_product(self, uid, vendor, category, size, color, price, sex):
+        if not self.validate_product_data(vendor, category, size, color, price, sex):
+            print('invalid')
+            return False
+        self.model.update(uid, vendor, category, size, color, price, sex)
+        return True
     
 
-    def add_product(self):
+    def validate_product_data(self, vendor, category, size, color, price, sex):
+        if not vendor:
+            messagebox.showerror("Ошибка валидации", "Пожалуйста, введите название производителя.")
+            return False
+        if not category:
+            messagebox.showerror("Ошибка валидации", "Пожалуйста, введите категорию.")
+            return False
+        if not size.isdigit():
+            messagebox.showerror("Ошибка валидации", "Размер должен быть числом.")
+            return False
+        if not color:
+            messagebox.showerror("Ошибка валидации", "Пожалуйста, введите цвет.")
+            return False
+        try:
+            price_value = float(price)
+            if price_value <= 0:
+                raise ValueError
+        except ValueError:
+            messagebox.showerror("Ошибка валидации", "Цена должна быть положительным числом.")
+            return False
+        if sex not in ("M", "F"):
+            messagebox.showerror("Ошибка валидации", "Пол должен быть 'M' или 'F'.")
+            return False
 
-        def read_data():
-            vendor = window.vendor.get()
-            category = window.category.get()
-            size = window.size.get()
-            color = window.color.get()
-            price = window.price.get()
-            sex = window.sex.get()
-            model = self.model.create(vendor, category, size, color, price, sex)
-            print(model.__dict__)
-            self.view.table.insert("", 'end', values=(
-                model.vendor, 
-                model.category,
-                model.size,
-                model.color,
-                model.price,
-                model.sex
-            ))
+        return True 
 
-        window = CreateProductWindow()
-        window.add_btn.config(command=read_data)
+
+        
         
 
         

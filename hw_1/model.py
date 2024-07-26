@@ -1,6 +1,7 @@
 from abc import ABC
 from statemanager import load, save
 from typing import List
+import uuid
 class Product:
     uid = 0
     
@@ -18,22 +19,35 @@ class Product:
         return self._data
 
     def create(self, vendor, category, size, color, price, sex):
-        uid = Product.uid + 1
+        uid = uuid.uuid4()
         model :ShoesModel = ShoesModel(uid, vendor, category, size, color, price, sex)
         self._data.append(model)
         self.save()
+        print(model.__dict__)
         return model
-
-    def delete(self, uid):
+    
+    def update(self, uid, vendor, category, size, color, price, sex):
         for model in self._data:
-            if model.uid == uid:
+            if str(model.uid) == uid:
+                model.vendor = vendor
+                model.category = category
+                model.size = size
+                model.color = color
+                model.price = price
+                model.sex = sex
+                self.save()
+                break
+
+    def delete(self, uid: str):
+        for model in self._data:
+            if str(model.uid) == uid:
                 self._data.remove(model)
                 self.save()
                 break
     
     def get(self, uid):
         for model in self._data:
-            if model.uid == uid:
+            if model.uid is uid:
                 return model
         return None
         
@@ -48,6 +62,9 @@ class ShoesModel:
         self.color = color
         self.price = price
         self.sex = sex
+
+    def get_tuple_values(self)-> tuple:
+        return [value for value in self.__dict__.values()]
 
 
 
