@@ -27,6 +27,8 @@ class MainWindow(tk.Tk):
         self.btn_update = self.create_button('Изменить')
         self.btn_update.config(state='disabled')
 
+        
+
 
         self.refresh_table()
     
@@ -46,6 +48,7 @@ class MainWindow(tk.Tk):
             item = self.table.item(selected_item)  # Получаем данные выделенной строки
             modal = UpdateProductWindow(master=self, values=item['values'], uid=item['values'][0])
             self.wait_window(modal)
+            self.btn_update.config(state='disabled')
             self.refresh_table()
 
     def delete_product(self,uid):
@@ -53,6 +56,7 @@ class MainWindow(tk.Tk):
         if selected_items:
             self.table.delete(selected_items[0])
             self.btn_delete.config(state='disabled')
+            self.btn_update.config(state='disabled')
             self.controller.delete_product(uid)
 
     def create_button(self, text: str):
@@ -95,6 +99,12 @@ class MainWindow(tk.Tk):
             self.table.insert('', 'end', values=product.get_tuple_values())
     
     
+
+
+class MenuFrame(tk.Frame):
+    def __init__(self, master: tk.Tk):
+        super().__init__(master)
+        pass
 
 
 class CreateProductWindow(tk.Toplevel):
@@ -198,7 +208,6 @@ class UpdateProductWindow(tk.Toplevel):
         color = self.color.get()
         price = self.price.get()
         sex = self.sex.get()
-        print(self.uid, vendor, category, size, color, price, sex)
         if self.controller.update_product(self.uid, vendor, category, size, color, price, sex):
             self.destroy()
     
