@@ -1,61 +1,63 @@
 from abc import ABC
 from typing import List, Dict
-from config import PAYMENT, TOPPING_PORTION
+
 import statemanager as sm
-
-
-class Topping:
-    
-    name:str
-    price:float
-    percent:float
-    count:float
-
-
-    def __new__(cls, *args, **kwargs):
-        instance = super(Topping, cls).__new__(cls, *args, **kwargs)
-        cls.count -=TOPPING_PORTION[cls.__name__]
+from mixins import StorageMixin
+from model import Pizza, Order
     
 
 
-class Pizza:
-    def  __init__(self) -> None:
-        self.toppings: List[Topping]= []
 
 
 
-class App:
+class App(StorageMixin):
 
     def __init__(self) -> None:
+
         self.data = {
             'toppings':[],
             'menu': [],
             'kassa':[],
-            'storage': {}
+            'storage': {},
         }
+        self.order = []
 
-        try:
-            self.load()
-        except:
-            self.load_default()
+        self.load_default()     
+        if self.first_load:
+            self._generate_pizza()
+            self._generate_toppings()
 
-    def load(self):
-        self.data = sm.load(self.data)
+       
+    def _generate_pizza(self)-> List:
+        list_pizzas = [Pizza(name=f'pizza_{_+1}') for _ in range(5)]
+        self.data['menu'] = list_pizzas
+        self.save()
+        return list_pizzas
+    
+    def _generate_toppings(self)-> List:
+        list_toppings = [Pizza(name=f'topping_{_+1}') for _ in range(5)]
+        self.data['toppings'] = list_toppings
+        self.save()
+        return list_toppings
+    
+    
+    
+    # def create_order(self, pizza):
+    #     order = Order()
+    #     order.pizzas.append(pizza)
+    #     self.order.append()
+    #     return self.order
 
-    def load_default(self):
-        data = {
-            'toppings':[],
-            'menu': [],
-            'kassa':[],
-            'storage': {}
-        }
-        self.save(data)
-        self.load()
 
-    def save(self):
-        sm.save(self.data)
+    
+    
 
         
     
 class Console:
     pass
+
+
+if __name__ == '__main__':
+    app = App()
+    print(app.__dict__)
