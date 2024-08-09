@@ -40,16 +40,7 @@ class App(StorageMixin):
         self.save()
         return list_toppings
     
-    
-    
-    # def create_order(self, pizza):
-    #     order = Order()
-    #     order.pizzas.append(pizza)
-    #     self.order.append()
-    #     return self.order
 
-
-    
     
 
         
