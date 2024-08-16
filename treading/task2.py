@@ -73,6 +73,7 @@ class Task2:
         t2 = Thread(target=task2.simple_numbers, daemon=True)
         t3 = Thread(target=task2.factorial_numbers, daemon=True)
         t1.start()
+        print(t1)
         t1.join()
         t2.start()
         t3.start()
