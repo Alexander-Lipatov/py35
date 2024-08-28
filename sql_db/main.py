@@ -1,6 +1,7 @@
 import asyncio
 from prisma import Prisma
 from prisma.models import Product
+from typing import Tuple
 
 
 prisma = Prisma()
@@ -39,7 +40,7 @@ async def create_product(title, type, color, calorie, description, short_desc):
         short_desc,
         )
     except Exception as e:
-        print(e)
+        raise e
 
 
 @decorator_function
@@ -88,13 +89,15 @@ async def get_all_colors():
 
 # ■ Отображение фруктов конкретного цвета;
 @decorator_function
-async def get_fruit_by_color(color, field:str|tuple='*', ):
+async def get_product_by_color(type, color, field:str|tuple='*', ):
     if isinstance(field, tuple):
         field_str = ', '.join(field)
     if isinstance(field, str):
         field_str = field
     fruit_by_color = await prisma.query_raw(
-        f'SELECT {field_str} FROM product WHERE type = 1 AND color =?',
+        f'SELECT ? FROM product WHERE type = ? AND color =?',
+        field_str,
+        type,
         color
     )
     return fruit_by_color
@@ -111,25 +114,44 @@ async def get_vegetable_by_color(color, field:str|tuple='*'):
         color
     )
     return fruit_by_color
+
+# ■ Отображение всех овощей с калорийностью меньше,
+# указанной калорийности;
+@decorator_function
+async def get_product_by_calorie(calorie, field:str|tuple='*'):
+    if type >= len(TYPE) or type < 0:
+        raise ValueError("Invalid type")
     
+    if isinstance(field, tuple):
+        field_str = ', '.join(field)
+    if isinstance(field, str):
+        field_str = field
+    
+    fruit_by_calorie = await prisma.query_raw(
+        f'SELECT {field_str} FROM product WHERE type = 0 AND calorie <=?',
+        calorie
+    )
+    return fruit_by_calorie
+
+
 
 async def main() -> None:
 
-    # product = await create_product(
-    #     'Банан2',
-    #     1,
-    #     'yellow',
-    #     85,
-    #     'Очень вкусный и полезный банан',
-    #     'Бананы - один из самых популярных овощей'
-    # )
+    product = await create_product(
+        'Банан122',
+        1,
+        'yellow',
+        85,
+        'Очень вкусный и полезный банан',
+        'Бананы - один из самых популярных овощей'
+    )
 
     # products = await get_all_product()
     # vegetable = await get_vegetable()
     # fruit = await get_fruit()
     # all_names = await get_all_names()
     # all_colors = await get_all_colors()
-    fruit_by_color = await get_vegetable_by_color('yellow', field=('title', 'color'))
+    fruit_by_color = await get_all_product()
     print(fruit_by_color)
 
 if __name__ == '__main__':
