@@ -1,2 +1,6 @@
 env
 .venv
+
+django/env
+django/*.pyc
+__pycache__
