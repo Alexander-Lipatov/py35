@@ -1,0 +1,20 @@
+
+{% extends "index.html" %}
+
+{% block title %}
+Таблица умножения
+{% endblock title %}
+
+{% block content %}
+<div class="table_mult">
+    {% for row in table %}
+    <div>
+    {% for keys, values in row.items %}
+    {% for key, value in values.items %}
+    <p>{{keys}} * {{key}} = {{value}}</p>
+    {% endfor%}
+    {% endfor%}
+</div>
+    {% endfor %}
+</div>
+{% endblock content %}
