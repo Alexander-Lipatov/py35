@@ -1,21 +1,51 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{title}}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+          theme: {
+            extend: {
+              colors: {
+                clifford: '#da373d',
+              }
+            }
+          }
+        }
+      </script>
+      <style type="text/tailwindcss">
+        @layer utilities {
+          .content-auto {
+            content-visibility: auto;
+          }
+        }
+      </style>
 </head>
 <body>
+  <header class="h-10 border-b border-black border-solid flex items-center justify-center">
+    <ul class='flex justify-center'>
+      <li class="flex justify-center items-center gap-2">
+          <a class="hover:border-b border-black border-solid" href="/">Главная</a>
+          <a href="/news">Новости</a>
+          <a href="/managers">Управляющие</a>
+          <a href="/facts">Факты</a>
+          <a href="/contacts">Контакты</a>
+      </li>
+  </ul>
 
-    <ul>
-        <li>
-            <a href="/">Главная</a>
-            <a href="/news">Новости</a>
-            <a href="/managers">Управляющие</a>
-            <a href="/facts">Факты</a>
-            <a href="/contacts">Контакты</a>
-        </li>
-    </ul>
-    {% block content %}{% endblock content %}
+  </header>
+    <main>
+      {% block content %}{% endblock content %}
+    </main>
+
+<footer>
+
+
+</footer>
 </body>
 </html>

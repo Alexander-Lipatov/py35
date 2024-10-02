@@ -3,3 +3,16 @@
 {% block title %}
     {{title}}
 {% endblock title %}
+
+{% block content %}
+<div class='my-10 mx-auto w-[800px] text-center flex flex-col'>
+  <h1 class="text-center font-bold text-3xl ">Выбери город из списка</h1>
+  <ul class="my-5 flex justify-center gap-4">
+    {% for city in cities %}
+    <li class="bg-blue-600 text-white px-3 py-1 rounded-lg">
+      <a href='/{{city.id}}'>{{city.name}}</a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock content %}

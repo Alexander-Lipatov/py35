@@ -13,7 +13,7 @@ class News(models.Model):
     content = models.TextField('Содержание новости')
     publication_date = models.DateTimeField('Дата публикации')
     author = models.CharField('Автор новости', max_length=100)
-    city = models.ForeignKey('City', verbose_name='Город', on_delete=models.CASCADE)
+    city = models.ForeignKey('City', verbose_name='Город', on_delete=models.CASCADE, related_name='news')
 
 
 class CityManagement(models.Model):
